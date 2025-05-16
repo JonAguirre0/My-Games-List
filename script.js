@@ -20,13 +20,22 @@ const search = document.querySelector('.search')
 const closeEl = document.getElementById('x')
 const title = document.getElementById('title')
 
+const today = new Date()
+const year = today.getFullYear()
+const month = String(today.getMonth() + 1).padStart(2,'0')
+const day = String(today.getDate()).padStart(2,'0')
+const todaysDate = `${year}-${month}-${day}`
+const endOfYear = `${year}-12-31`
+
 //Provide API key below
 const API_KEY = '?'
 const API_URL = `https://api.rawg.io/api/games?key=${API_KEY}`
 const API_URL_TOPRATED = `https://api.rawg.io/api/games?key=${API_KEY}&ordering=-metacritic`
 const API_URL_USERRATING = `https://api.rawg.io/api/games?key=${API_KEY}&ordering=-rating`
+const API_URL_UPCOMING = `https://api.rawg.io/api/games?key=${API_KEY}&ordering=released&dates=${todaysDate},${endOfYear}`
 
 let page = 1
+let isTopRated = false
 
 
 window.onload = function loading() {
@@ -39,11 +48,19 @@ window.onload = function loading() {
 
 //Get initial games
 // getGames(API_URL)
+getGames(API_URL_UPCOMING)
 
 async function getGames(url) {
     main.innerHTML = ''
+    
     const res = await fetch(url)
     const data = await res.json()
+    document.getElementById('next').disabled = !data.next
+    document.getElementById('prev').disabled = !data.previous
+    
+    // const res = await fetch(url)
+    // const data = await res.json()
+    //.map() is used to loop over each "game" in the data.results array and perform an operation on each game. Promise.all() is used since .map() creates an array of promises, Promise.all() is used to wait for all promises to resolve before continuing.
     const gamesDescription = await Promise.all(data.results.map(async (game) => {
         const gameDescription = await getGameDescription(game)
         return gameDescription
@@ -75,9 +92,12 @@ function showGames(games) {
             <img src="${background_image ? background_image: 'https://media.istockphoto.com/id/1472933890/vector/no-image-vector-symbol-missing-available-icon-no-gallery-for-this-moment-placeholder.jpg?s=612x612&w=0&k=20&c=Rdn-lecwAj8ciQEccm0Ep2RX50FCuUJOaEM8qQjiLL0='}" alt="${title}"}>
             <div class="game-info">
                 <h3>${name}</h3>
-                <span>User Rating: <span class="${getClassByRate(rating)}">${rating}/5</span></span>
-                <span>Metacritic Rating: <span class="${getClassByMetacritic(metacritic)}">${metacritic ? metacritic :''}</span></span>
-                <span class="date">Date: ${released}</span>
+                <span id="UR">User Rating: <span id="R" class="${getClassByRate(rating)}">${rating}/5</span></span>
+                <span id="line"></span>
+                <span id="MR">Metacritic Rating: <span id="M" class="${getClassByMetacritic(metacritic)}">${metacritic ? metacritic :''}</span></span>
+                <span id="line"></span>
+                <span id="D">Date: <span class="date">${released}</span></span>
+                <span id="line"></span>
             </div>
             <div class="overview">
                 <h3>Description</h3>
@@ -154,6 +174,45 @@ form.addEventListener('submit', (e) => {
 })
 
 topRated.addEventListener('click', () => {
+    page = 1
+    isTopRated = true
     getGames(API_URL_TOPRATED)
     title.innerHTML = "Top Rated Games"
+    counter.innerHTML = `${page}`
 })
+
+function getNextPage() {
+    if (isTopRated) {
+        const API_URL_TOPRATED = `https://api.rawg.io/api/games?key=${API_KEY}&ordering=-metacritic&page=${page}`
+        getGames(API_URL_TOPRATED)
+        title.innerHTML = `Top Rated Games Page ${page}`
+    } else {
+        const API_URL_UPCOMING = `https://api.rawg.io/api/games?key=${API_KEY}&ordering=released&dates=${todaysDate},${endOfYear}&page=${page}`
+        getGames(API_URL_UPCOMING)
+        title.innerHTML = `Upcoming Games Page ${page}`
+    }
+}
+
+next.addEventListener('click', () => {
+    page++
+    getNextPage()
+    counter.innerHTML = `${page}`
+})
+
+// function getNextPage() {
+//     const API_URL_UPCOMING = `https://api.rawg.io/api/games?key=${API_KEY}&ordering=released&dates=${todaysDate},${endOfYear}&page=${page}`
+//     getGames(API_URL_UPCOMING)
+//     title.innerHTML = `Upcoming Games Page ${page}`
+// }
+
+prev.addEventListener('click', () => {
+    page--
+    getPrevPage()
+    counter.innerHTML = `${page}`
+})
+
+function getPrevPage() {
+    const API_KEY_UPCOMING = `https://api.rawg.io/api/games?key=${API_KEY}&ordering=released&dates=${todaysDate},${endOfYear}&page=${page}`
+    getGames(API_KEY_UPCOMING)
+    title.innerHTML = `Upcoming Games Page ${page}`
+}
