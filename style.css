@@ -494,7 +494,7 @@ main {
     position: relative;
     justify-content: center;
     align-items: center;
-    right: 60px;
+    right: 70px;
 }
 .game-info #R {
     display: flex;
@@ -506,7 +506,7 @@ main {
     position: relative;
     justify-content: center;
     align-items: center;
-    right: 52px;
+    right: 62px;
 }
 .game-info #M {
     display: flex;
