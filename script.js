@@ -14,9 +14,99 @@ const toggleImg = document.querySelector('.toggleImg')
 const prev = document.querySelector('.prev')
 const counter = document.querySelector('.counter')
 const next = document.querySelector('.next')
+const main = document.getElementById('main')
 const form = document.querySelector('.form')
 const search = document.querySelector('.search')
 const closeEl = document.getElementById('x')
+const title = document.getElementById('title')
+
+//Provide API key below
+const API_KEY = '?'
+const API_URL = `https://api.rawg.io/api/games?key=${API_KEY}`
+const API_URL_TOPRATED = `https://api.rawg.io/api/games?key=${API_KEY}&ordering=-metacritic`
+const API_URL_USERRATING = `https://api.rawg.io/api/games?key=${API_KEY}&ordering=-rating`
+
+let page = 1
+
+
+window.onload = function loading() {
+    setTimeout(function() {
+        document.getElementById('loader').style.display = "none"
+        document.getElementById('background').style.display = "block"
+    }, 999)
+}
+
+
+//Get initial games
+// getGames(API_URL)
+
+async function getGames(url) {
+    main.innerHTML = ''
+    const res = await fetch(url)
+    const data = await res.json()
+    const gamesDescription = await Promise.all(data.results.map(async (game) => {
+        const gameDescription = await getGameDescription(game)
+        return gameDescription
+    })) 
+    
+
+    showGames(gamesDescription)
+    // showGames(data.results)
+    counter.innerHTML = `${page}`
+}
+
+async function getGameDescription(game) {
+    const url = `https://api.rawg.io/api/games/${game.id}?key=${API_KEY}`
+    const res = await fetch(url)
+    const data = await res.json()
+    const description = data.description
+    game.description = description
+    return game
+    
+}
+
+function showGames(games) {
+    games.forEach((game) => {
+        const {name, background_image, metacritic, rating, description, released} = game
+
+        const gameEl = document.createElement('div')
+        gameEl.classList.add('game')
+        gameEl.innerHTML = `
+            <img src="${background_image ? background_image: 'https://media.istockphoto.com/id/1472933890/vector/no-image-vector-symbol-missing-available-icon-no-gallery-for-this-moment-placeholder.jpg?s=612x612&w=0&k=20&c=Rdn-lecwAj8ciQEccm0Ep2RX50FCuUJOaEM8qQjiLL0='}" alt="${title}"}>
+            <div class="game-info">
+                <h3>${name}</h3>
+                <span>User Rating: <span class="${getClassByRate(rating)}">${rating}/5</span></span>
+                <span>Metacritic Rating: <span class="${getClassByMetacritic(metacritic)}">${metacritic ? metacritic :''}</span></span>
+                <span class="date">Date: ${released}</span>
+            </div>
+            <div class="overview">
+                <h3>Description</h3>
+                ${description} ${released}    
+            </div>
+        `
+        main.appendChild(gameEl)
+    })
+}
+
+function getClassByRate(rate){
+    if(rate >= 4) {
+        return 'green'
+    } else if(rate >= 3) {
+        return 'orange'
+    } else {
+        return 'red'
+    }
+}
+
+function getClassByMetacritic(rate){
+    if(rate >= 80) {
+        return 'green'
+    } else if(rate >= 50) {
+        return 'orange'
+    } else {
+        return 'red'
+    }
+}
 
 
 logo.addEventListener('click', () => {
@@ -27,7 +117,7 @@ logo.addEventListener('click', () => {
 darkToggle.addEventListener('click', () => {
     if(toggleImg.src === 'https://cdn-icons-png.freepik.com/512/6714/6714978.png') {
         // toggleImg.src = 'https://static.thenounproject.com/png/979909-200.png'
-        toggleImg.src = './image3.png' 
+        toggleImg.src = './images/image3.png' 
         document.body.classList.toggle('dark-theme')
     } else {
         toggleImg.src = 'https://cdn-icons-png.freepik.com/512/6714/6714978.png'
@@ -61,4 +151,9 @@ form.addEventListener('submit', (e) => {
     } else {
         window.location.reload()
     }
+})
+
+topRated.addEventListener('click', () => {
+    getGames(API_URL_TOPRATED)
+    title.innerHTML = "Top Rated Games"
 })
