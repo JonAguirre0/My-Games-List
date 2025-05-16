@@ -27,6 +27,7 @@ body.dark-theme {
     height: 100%;
     width: 100%;
     background:black url('https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExN25nYmFxejdmdDdhaXVibHZxbGMyOGg2bmRxeW55NWd1MjZ6ZWs5dyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/MydKZ8HdiPWALc0Lqf/giphy.gif') no-repeat center;
+    z-index: 1000;
 }
 
 .nav {
@@ -64,7 +65,7 @@ body.dark-theme {
 .dark-toggle {
     background-color: transparent;
     position: relative;
-    left: -460px;
+    left: -430px;
     top: -5px;
     height: 50px;
     width: 50px;

@@ -33,9 +33,11 @@ const API_URL = `https://api.rawg.io/api/games?key=${API_KEY}`
 const API_URL_TOPRATED = `https://api.rawg.io/api/games?key=${API_KEY}&ordering=-metacritic`
 const API_URL_USERRATING = `https://api.rawg.io/api/games?key=${API_KEY}&ordering=-rating`
 const API_URL_UPCOMING = `https://api.rawg.io/api/games?key=${API_KEY}&ordering=released&dates=${todaysDate},${endOfYear}`
+const API_URL_Search = `https://api.rawg.io/api/games?key=${API_KEY}&search=`
 
 let page = 1
 let isTopRated = false
+let isSearchTerm = false
 
 
 window.onload = function loading() {
@@ -132,6 +134,7 @@ function getClassByMetacritic(rate){
 logo.addEventListener('click', () => {
     window.scrollTo(0,0)
     window.location.reload()
+    search.value = ''
 })
 
 darkToggle.addEventListener('click', () => {
@@ -160,38 +163,36 @@ form.addEventListener('submit', (e) => {
     e.preventDefault()
 
     const searchTerm = search.value
+    isSearchTerm = true
 
     if(searchTerm && searchTerm !== '') {
+        getGames(API_URL_Search + searchTerm)
+        title.innerHTML = `${searchTerm}`
 
-        search.value = ''
+        page = 1
+        counter.innerHTML = ''
+        // search.value = ''
         //to get rid of the prev, counter, next elements since not needed
-        prev.style.display = 'none'
-        counter.style.display = 'none'
-        next.style.display = 'none'
+        // prev.style.display = 'none'
+        // counter.style.display = 'none'
+        // next.style.display = 'none'
     } else {
         window.location.reload()
     }
 })
 
 topRated.addEventListener('click', () => {
+    document.getElementById('loader').style.display = "block"
+
     page = 1
     isTopRated = true
-    getGames(API_URL_TOPRATED)
+    getGames(API_URL_TOPRATED).then(() => {
+        document.getElementById('loader').style.display = "none"
+        document.getElementById('background').style.display = "block"
+    }) 
     title.innerHTML = "Top Rated Games"
     counter.innerHTML = `${page}`
 })
-
-function getNextPage() {
-    if (isTopRated) {
-        const API_URL_TOPRATED = `https://api.rawg.io/api/games?key=${API_KEY}&ordering=-metacritic&page=${page}`
-        getGames(API_URL_TOPRATED)
-        title.innerHTML = `Top Rated Games Page ${page}`
-    } else {
-        const API_URL_UPCOMING = `https://api.rawg.io/api/games?key=${API_KEY}&ordering=released&dates=${todaysDate},${endOfYear}&page=${page}`
-        getGames(API_URL_UPCOMING)
-        title.innerHTML = `Upcoming Games Page ${page}`
-    }
-}
 
 next.addEventListener('click', () => {
     page++
@@ -199,11 +200,33 @@ next.addEventListener('click', () => {
     counter.innerHTML = `${page}`
 })
 
-// function getNextPage() {
-//     const API_URL_UPCOMING = `https://api.rawg.io/api/games?key=${API_KEY}&ordering=released&dates=${todaysDate},${endOfYear}&page=${page}`
-//     getGames(API_URL_UPCOMING)
-//     title.innerHTML = `Upcoming Games Page ${page}`
-// }
+function getNextPage() {
+    if (isTopRated) {
+        document.getElementById('loader').style.display = "block"
+        const API_URL_TOPRATED = `https://api.rawg.io/api/games?key=${API_KEY}&ordering=-metacritic&page=${page}`
+        getGames(API_URL_TOPRATED).then(() => {
+            document.getElementById('loader').style.display = "none"
+            document.getElementById('background').style.display = "block"
+        })
+        title.innerHTML = `Top Rated Games Page ${page}`
+    } else if (isSearchTerm) {
+        document.getElementById('loader').style.display = "block"
+        const searchTerm = search.value
+        const API_URL_Search = `https://api.rawg.io/api/games?key=${API_KEY}&page=${page}&search=${searchTerm}`
+        getGames(API_URL_Search).then(() => {
+            document.getElementById('loader').style.display = "none"
+            document.getElementById('background').style.display = "block"
+        })
+    } else {
+        document.getElementById('loader').style.display = "block"
+        const API_URL_UPCOMING = `https://api.rawg.io/api/games?key=${API_KEY}&ordering=released&dates=${todaysDate},${endOfYear}&page=${page}`
+        getGames(API_URL_UPCOMING).then(() => {
+            document.getElementById('loader').style.display = "none"
+            document.getElementById('background').style.display = "block"
+        })
+        title.innerHTML = `Upcoming Games Page ${page}`
+    }
+}
 
 prev.addEventListener('click', () => {
     page--
@@ -212,7 +235,29 @@ prev.addEventListener('click', () => {
 })
 
 function getPrevPage() {
-    const API_KEY_UPCOMING = `https://api.rawg.io/api/games?key=${API_KEY}&ordering=released&dates=${todaysDate},${endOfYear}&page=${page}`
-    getGames(API_KEY_UPCOMING)
-    title.innerHTML = `Upcoming Games Page ${page}`
+    if (isTopRated) {
+        document.getElementById('loader').style.display = "block"
+        const API_URL_TOPRATED = `https://api.rawg.io/api/games?key=${API_KEY}&ordering=-metacritic&page=${page}`
+        getGames(API_URL_TOPRATED).then(() => {
+            document.getElementById('loader').style.display = "none"
+            document.getElementById('background').style.display = "block"
+        })
+        title.innerHTML = `Top Rated Games Page ${page}`
+    } else if(isSearchTerm) {
+        document.getElementById('loader').style.display = 'block'
+        const searchTerm = search.value
+        const API_URL_Search = `https://api.rawg.io/api/games?key=${API_KEY}&page=${page}&search=${searchTerm}`
+        getGames(API_URL_Search).then(() => {
+            document.getElementById('loader').style.display = "none"
+            document.getElementById('background').style.display = "block"
+        })
+    } else {
+        document.getElementById('loader').style.display = "block"
+        const API_KEY_UPCOMING = `https://api.rawg.io/api/games?key=${API_KEY}&ordering=released&dates=${todaysDate},${endOfYear}&page=${page}`
+        getGames(API_KEY_UPCOMING).then(() => {
+            document.getElementById('loader').style.display = "none"
+            document.getElementById('background').style.display = "block"
+        })
+        title.innerHTML = `Upcoming Games Page ${page}`
+    }
 }
