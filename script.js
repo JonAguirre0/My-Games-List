@@ -208,7 +208,7 @@ function getNextPage() {
             document.getElementById('loader').style.display = "none"
             document.getElementById('background').style.display = "block"
         })
-        title.innerHTML = `Top Rated Games Page ${page}`
+        // title.innerHTML = `Top Rated Games Page ${page}`
     } else if (isSearchTerm) {
         document.getElementById('loader').style.display = "block"
         const searchTerm = search.value
@@ -224,7 +224,7 @@ function getNextPage() {
             document.getElementById('loader').style.display = "none"
             document.getElementById('background').style.display = "block"
         })
-        title.innerHTML = `Upcoming Games Page ${page}`
+        // title.innerHTML = `Upcoming Games Page ${page}`
     }
 }
 
@@ -242,7 +242,7 @@ function getPrevPage() {
             document.getElementById('loader').style.display = "none"
             document.getElementById('background').style.display = "block"
         })
-        title.innerHTML = `Top Rated Games Page ${page}`
+        // title.innerHTML = `Top Rated Games Page ${page}`
     } else if(isSearchTerm) {
         document.getElementById('loader').style.display = 'block'
         const searchTerm = search.value
@@ -258,6 +258,6 @@ function getPrevPage() {
             document.getElementById('loader').style.display = "none"
             document.getElementById('background').style.display = "block"
         })
-        title.innerHTML = `Upcoming Games Page ${page}`
+        // title.innerHTML = `Upcoming Games Page ${page}`
     }
 }
