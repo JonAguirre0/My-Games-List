@@ -205,11 +205,11 @@ body.dark-theme {
 
 .nav #title {
     position: fixed;
-    margin-top: 140px;
+    /* margin-top: 140px; */
     /* right: 150px; */
     right:25%;
     /* margin-left: 500px; */
-    transform: translate(-50%,-50%);
+    transform: translate(-50%);
     font-family: inherit;
     font-size: 55px;
     color: var(--text-color);
