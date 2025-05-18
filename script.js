@@ -137,6 +137,11 @@ logo.addEventListener('click', () => {
     search.value = ''
 })
 
+menu.addEventListener('click', () => {
+    menu.classList.toggle('active')
+    offScreenMenu.classList.toggle('active')
+})
+
 darkToggle.addEventListener('click', () => {
     if(toggleImg.src === 'https://cdn-icons-png.freepik.com/512/6714/6714978.png') {
         // toggleImg.src = 'https://static.thenounproject.com/png/979909-200.png'
@@ -146,17 +151,6 @@ darkToggle.addEventListener('click', () => {
         toggleImg.src = 'https://cdn-icons-png.freepik.com/512/6714/6714978.png'
         document.body.classList.toggle('dark-theme')
     }   
-})
-
-menu.addEventListener('click', () => {
-    menu.classList.toggle('active')
-    offScreenMenu.classList.toggle('active')
-})
-
-accountMenu.addEventListener('click', () => {
-    accountIcon.classList.toggle('active')
-    accountXIcon.classList.toggle('active')
-    offScreenSideMenu.classList.toggle('active')
 })
 
 form.addEventListener('submit', (e) => {
@@ -179,6 +173,12 @@ form.addEventListener('submit', (e) => {
     } else {
         window.location.reload()
     }
+})
+
+accountMenu.addEventListener('click', () => {
+    accountIcon.classList.toggle('active')
+    accountXIcon.classList.toggle('active')
+    offScreenSideMenu.classList.toggle('active')
 })
 
 topRated.addEventListener('click', () => {
