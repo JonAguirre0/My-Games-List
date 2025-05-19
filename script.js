@@ -15,6 +15,7 @@ const prev = document.querySelector('.prev')
 const counter = document.querySelector('.counter')
 const next = document.querySelector('.next')
 const main = document.getElementById('main')
+const main2 = document.getElementById('main2')
 const form = document.querySelector('.form')
 const search = document.querySelector('.search')
 const closeEl = document.getElementById('x')
@@ -45,6 +46,14 @@ window.onload = function loading() {
         document.getElementById('loader').style.display = "none"
         document.getElementById('background').style.display = "block"
     }, 999)
+}
+
+async function getGenres(url) {
+    mains.innerHTML = ''
+    
+    const res = await fetch(url)
+    const data = await res.json()
+    showGenres(data.results)
 }
 
 
