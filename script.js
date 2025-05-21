@@ -29,7 +29,7 @@ const todaysDate = `${year}-${month}-${day}`
 const endOfYear = `${year}-12-31`
 
 //Provide API key below
-const API_KEY = '152fcd28cc964712b70c8816db49e50a'
+const API_KEY = '?'
 const API_URL = `https://api.rawg.io/api/games?key=${API_KEY}`
 const API_URL_TOPRATED = `https://api.rawg.io/api/games?key=${API_KEY}&ordering=-metacritic`
 const API_URL_USERRATING = `https://api.rawg.io/api/games?key=${API_KEY}&ordering=-rating`
