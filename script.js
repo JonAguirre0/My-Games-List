@@ -35,6 +35,7 @@ const API_URL_TOPRATED = `https://api.rawg.io/api/games?key=${API_KEY}&ordering=
 const API_URL_USERRATING = `https://api.rawg.io/api/games?key=${API_KEY}&ordering=-rating`
 const API_URL_UPCOMING = `https://api.rawg.io/api/games?key=${API_KEY}&ordering=released&dates=${todaysDate},${endOfYear}`
 const API_URL_Search = `https://api.rawg.io/api/games?key=${API_KEY}&search=`
+const API_URL_RANDOM = `https://api.rawg.io/api/games?key=${API_KEY}&page=`
 
 let page = 1
 let isTopRated = false
@@ -201,6 +202,20 @@ topRated.addEventListener('click', () => {
     title.innerHTML = "Top Rated Games"
     counter.innerHTML = `${page}`
 })
+
+random.addEventListener('click', () => {
+    getRandomGames()
+    title.innerHTML = "Random Games"
+    counter.innerHTML = `${page}`
+    document.getElementById("prev").style.display = 'none'
+    document.getElementById("counter").style.display = 'none'
+    document.getElementById("next").style.display = 'none'
+})
+function getRandomGames() {
+    const randomPage = Math.floor(Math.random() * 500) + 1
+    const API_URL_RANDOM = `https://api.rawg.io/api/games?key=${API_KEY}&page=${randomPage}`
+    getGames(API_URL_RANDOM)
+}
 
 next.addEventListener('click', () => {
     page++
