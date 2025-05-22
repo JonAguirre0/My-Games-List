@@ -21,6 +21,7 @@ const search = document.querySelector('.search')
 const closeEl = document.getElementById('x')
 const title = document.getElementById('title')
 const genre = document.querySelector('.genre')
+const gameGenre = document.querySelector('.gameG')
 
 const today = new Date()
 const year = today.getFullYear()
@@ -37,10 +38,13 @@ const API_URL_USERRATING = `https://api.rawg.io/api/games?key=${API_KEY}&orderin
 const API_URL_UPCOMING = `https://api.rawg.io/api/games?key=${API_KEY}&ordering=released&dates=${todaysDate},${endOfYear}`
 const API_URL_Search = `https://api.rawg.io/api/games?key=${API_KEY}&search=`
 const API_URL_RANDOM = `https://api.rawg.io/api/games?key=${API_KEY}&page=`
+const API_GENRES = `https://api.rawg.io/api/genres?key=${API_KEY}`
 
 let page = 1
 let isTopRated = false
 let isSearchTerm = false
+let isGenre = false
+let slug = ''
 
 
 window.onload = function loading() {
@@ -117,6 +121,31 @@ function showGames(games) {
             </div>
         `
         main.appendChild(gameEl)
+    })
+}
+
+function showGenres(games) {
+    games.forEach((game) => {
+        const {name, image_background,slug} = game
+
+        const genreEl = document.createElement('div')
+        genreEl.classList.add('gameG')
+        genreEl.innerHTML = `
+            <div class="game-img">
+                <img src="${image_background ? image_background: 'https://media.istockphoto.com/id/1472933890/vector/no-image-vector-symbol-missing-available-icon-no-gallery-for-this-moment-placeholder.jpg?s=612x612&w=0&k=20&c=Rdn-lecwAj8ciQEccm0Ep2RX50FCuUJOaEM8qQjiLL0='}">
+            </div>
+            <div class="game-info">
+                <h3>${name}</h3>
+            </div>
+        `
+        genreEl.addEventListener('click', () => {
+            main2.innerHTML=''
+            const genreName = slug.toLowerCase()
+            console.log(`genre clicked ${genreName}`)
+            const API_GENRE_NAME = `https://api.rawg.io/api/games?genres=${genreName}&key=${API_KEY}`
+            getGames(API_GENRE_NAME)
+        })
+        main2.appendChild(genreEl)
     })
 }
 
@@ -220,25 +249,16 @@ function getRandomGames() {
 
 //still work in progress below
 genre.addEventListener('click', () => {
+    title.innerText = "Browse by Genres"
     main.innerHTML = ''
-
-    const genreEl = document.createElement('div')
-    genreEl.classList.add('slider')
-    genreEl.innerHTML = `
-        <button class="leftBtn"><</button>
-        <button class="rightBtn">></button>
-        <div class="gameG">
-            <div class="game-img">
-                <img src="https://images.unsplash.com/photo-1746647695879-bfab32f59f34?q=80&w=2669&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="title">
-            </div>
-                <div class="game-info">
-                        <h3>name</h3>
-                </div>
-        </div>
-       
-    `
-    main2.appendChild(genreEl)
+    isGenre = true
+    
+    getGenres(API_GENRES)
 })
+
+// gameGenre.addEventListener('click', () => {
+//     console.log('gameG clicked')
+// })
 
 next.addEventListener('click', () => {
     page++
@@ -263,6 +283,10 @@ function getNextPage() {
             document.getElementById('loader').style.display = "none"
             document.getElementById('background').style.display = "block"
         })
+    } else if(isGenre) {
+        const genreName = slug.toLowerCase()
+        const API_GENRE_NAME = `https://api.rawg.io/api/games?genres=${genreName}&page=${page}&key=${API_KEY}`
+        getGames(API_GENRE_NAME)
     } else {
         document.getElementById('loader').style.display = "block"
         const API_URL_UPCOMING = `https://api.rawg.io/api/games?key=${API_KEY}&ordering=released&dates=${todaysDate},${endOfYear}&page=${page}`
@@ -307,6 +331,16 @@ function getPrevPage() {
         // title.innerHTML = `Upcoming Games Page ${page}`
     }
 }
+
+
+
+
+
+
+
+
+
+
 
 const leftBtn = document.querySelector(".leftBtn")
 const rightBtn = document.querySelector('.rightBtn')
