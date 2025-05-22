@@ -290,7 +290,7 @@ const rightBtn = document.querySelector('.rightBtn')
 const leftBtn2 = document.querySelector(".leftBtn2")
 const rightBtn2 = document.querySelector('.rightBtn2')
 let currentIndex = 0
-let currentIndex2 = 0
+//let currentIndex2 = 0
 leftBtn.addEventListener('click', () => {
     slider1('left')
 })
@@ -312,28 +312,52 @@ function slider1(direction){
     if (direction === 'right') {
         if (currentIndex < totalGenres - 1){
             currentIndex++
+        } else {
+            currentIndex = 0
         }
     } else if(direction === 'left'){
         if(currentIndex > 0){
             currentIndex--
+        } else {
+            currentIndex = totalGenres - 1
         }
     }
     slider.style.transform = `translateX(-${gameGWidth * currentIndex}px)`
 }
 function sliderRPG(direction){
     const sliderRPG = document.querySelector('.sliderRPG')
-    const genres = document.querySelectorAll('.gameG')
+    const genres = document.querySelectorAll('.gameG2')
     const gameGWidth = genres[0].offsetWidth
     const totalGenres = genres.length
 
+    // if (currentIndex2 === totalGenres -7) {
+    //     rightBtn2.disabled = true
+    //     rightBtn2.style.cursor = 'not-allowed'
+    // } else {
+    //     rightBtn2.disabled = false
+    //     rightBtn2.style.cursor = 'pointer'
+    // }
+
+    // if(currentIndex2===0) {
+    //     leftBtn2.disabled = true
+    //     leftBtn2.style.cursor = 'not-allowed'
+    // } else {
+    //     leftBtn2.disabled = false
+    //     leftBtn2.style.cursor = 'pointer'
+    // }
+    // let currentIndex2 = 0
     if (direction === 'right') {
-        if (currentIndex2 < totalGenres - 1){
-            currentIndex2++
+        if (currentIndex < totalGenres - 1){
+            currentIndex++
+        } else {
+            currentIndex = 0
         }
     } else if(direction === 'left'){
-        if(currentIndex2 > 0){
-            currentIndex2--
+        if(currentIndex > 0){
+            currentIndex--
+        } else {
+            currentIndex = totalGenres - 1
         }
     }
-    sliderRPG.style.transform = `translateX(-${gameGWidth * currentIndex2}px)`
+    sliderRPG.style.transform = `translateX(-${gameGWidth * currentIndex}px)`
 }
