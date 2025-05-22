@@ -284,3 +284,55 @@ function getPrevPage() {
         // title.innerHTML = `Upcoming Games Page ${page}`
     }
 }
+
+const leftBtn = document.querySelector(".leftBtn")
+const rightBtn = document.querySelector('.rightBtn')
+const leftBtn2 = document.querySelector(".leftBtn2")
+const rightBtn2 = document.querySelector('.rightBtn2')
+let currentIndex = 0
+leftBtn.addEventListener('click',() => {
+    slider1('left')
+})
+rightBtn.addEventListener('click', () => {
+    slider1('right')
+})
+leftBtn2.addEventListener('click',() => {
+    sliderRPG('left')
+})
+rightBtn2.addEventListener('click', () => {
+    sliderRPG('right')
+})
+function slider1(direction){
+    const slider = document.querySelector('.slider')
+    const genres = document.querySelectorAll('.gameG')
+    const gameGWidth = genres[0].offsetWidth
+    const totalGenres = genres.length
+
+    if (direction === 'right') {
+        if (currentIndex < totalGenres - 1){
+            currentIndex++
+        }
+    } else if(direction === 'left'){
+        if(currentIndex > 0){
+            currentIndex--
+        }
+    }
+    slider.style.transform = `translateX(-${gameGWidth * currentIndex}px)`
+}
+function sliderRPG(direction){
+    const sliderRPG = document.querySelector('.sliderRPG')
+    const genres = document.querySelectorAll('.gameG')
+    const gameGWidth = genres[0].offsetWidth
+    const totalGenres = genres.length
+
+    if (direction === 'right') {
+        if (currentIndex < totalGenres - 1){
+            currentIndex++
+        }
+    } else if(direction === 'left'){
+        if(currentIndex > 0){
+            currentIndex--
+        }
+    }
+    sliderRPG.style.transform = `translateX(-${gameGWidth * currentIndex}px)`
+}
