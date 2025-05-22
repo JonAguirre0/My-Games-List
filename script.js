@@ -20,6 +20,7 @@ const form = document.querySelector('.form')
 const search = document.querySelector('.search')
 const closeEl = document.getElementById('x')
 const title = document.getElementById('title')
+const genre = document.querySelector('.genre')
 
 const today = new Date()
 const year = today.getFullYear()
@@ -216,6 +217,28 @@ function getRandomGames() {
     const API_URL_RANDOM = `https://api.rawg.io/api/games?key=${API_KEY}&page=${randomPage}`
     getGames(API_URL_RANDOM)
 }
+
+//still work in progress below
+genre.addEventListener('click', () => {
+    main.innerHTML = ''
+
+    const genreEl = document.createElement('div')
+    genreEl.classList.add('slider')
+    genreEl.innerHTML = `
+        <button class="leftBtn"><</button>
+        <button class="rightBtn">></button>
+        <div class="gameG">
+            <div class="game-img">
+                <img src="https://images.unsplash.com/photo-1746647695879-bfab32f59f34?q=80&w=2669&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="title">
+            </div>
+                <div class="game-info">
+                        <h3>name</h3>
+                </div>
+        </div>
+       
+    `
+    main2.appendChild(genreEl)
+})
 
 next.addEventListener('click', () => {
     page++
