@@ -44,7 +44,7 @@ let page = 1
 let isTopRated = false
 let isSearchTerm = false
 let isGenre = false
-let slug = ''
+let genreName = ''
 
 
 window.onload = function loading() {
