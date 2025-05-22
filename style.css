@@ -647,43 +647,6 @@ main {
     border-top-left-radius: 10px; 
     border-top-right-radius: 10px;
 }
-.rightBtn {
-    display: flex;
-    position: absolute;
-    justify-content: center;
-    align-items: center;
-    right: 460px;
-    height: 10%;
-    width: 1.5%;
-    font-size: 20px;
-    border: 1px solid var(--text-color);
-    border-radius: 10px;
-    background-color: var(--bkg-color);
-    color: var(--text-color);
-    cursor: pointer;
-}
-.rightBtn:active {
-    transform: scale(0.9);
-}
-.leftBtn {
-    display: flex;
-    position: absolute;
-    justify-content: center;
-    align-items: center;
-    left: 500px;
-    /* height: 6%; */
-    height: 10%;
-    width: 1.5%;
-    font-size: 20px;
-    border: 1px solid var(--text-color);
-    border-radius: 10px;
-    background-color: var(--bkg-color);
-    color: var(--text-color);
-    cursor: pointer;
-}
-.leftBtn:active {
-    transform: scale(0.9);
-}
 
 #main2 {
     display:flex;
@@ -712,7 +675,7 @@ main {
     display: flex;
     flex-wrap: nowrap;
     /* overflow: hidden; */
-    margin: 0 5rem;
+    /* margin: 0 5rem; */
     height: 650px;
     margin-left: 120rem;
     
@@ -744,23 +707,49 @@ main {
 }
 .leftBtn {
     display: flex;
+    position: absolute;
+    justify-content: center;
+    align-items: center;
     left: 40px;
     top: 21%;
     z-index: 100;
     background-color: transparent;
+    height: 10%;
+    width: 1.5%;
+    font-size: 20px;
+    border: 1px solid var(--text-color);
+    border-radius: 10px;
+    color: var(--text-color);
+    cursor: pointer;
 }
 .leftBtn:hover {
     background-color: lightslategray;
 }
+.leftBtn:active {
+    transform: scale(0.9);
+}
 .rightBtn {
     display: flex;
+    position: absolute;
+    justify-content: center;
+    align-items: center;
     right: 25px;
     top: 21%;
     z-index: 100;
     background-color: transparent;
+    height: 10%;
+    width: 1.5%;
+    font-size: 20px;
+    border: 1px solid var(--text-color);
+    border-radius: 10px;
+    color: var(--text-color);
+    cursor: pointer;
 }
 .rightBtn:hover {
     background-color: lightslategray;
+}
+.rightBtn:active {
+    transform: scale(0.9);
 }
 
 .leftBtn2 {
@@ -770,7 +759,7 @@ main {
     align-items: center;
     left: 35px;
     top: 65%;
-    height: 20%;
+    height: 10%;
     width: 1.5%;
     font-size: 20px;
     border: 1px solid var(--text-color);
@@ -783,6 +772,9 @@ main {
 .leftBtn2:hover {
     background-color: lightslategray;
 }
+.leftBtn2:active {
+    transform: scale(0.9);
+}
 .rightBtn2 {
     display: flex;
     position: absolute;
@@ -790,7 +782,7 @@ main {
     align-items: center;
     right: 25px;
     top: 65%;
-    height: 20%;
+    height: 10%;
     width: 1.5%;
     font-size: 20px;
     border: 1px solid var(--text-color);
@@ -802,6 +794,9 @@ main {
 }
 .rightBtn2:hover {
     background-color: lightslategray;
+}
+.rightBtn2:active {
+    transform: scale(0.9);
 }
 
 

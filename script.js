@@ -290,13 +290,14 @@ const rightBtn = document.querySelector('.rightBtn')
 const leftBtn2 = document.querySelector(".leftBtn2")
 const rightBtn2 = document.querySelector('.rightBtn2')
 let currentIndex = 0
-leftBtn.addEventListener('click',() => {
+let currentIndex2 = 0
+leftBtn.addEventListener('click', () => {
     slider1('left')
 })
 rightBtn.addEventListener('click', () => {
     slider1('right')
 })
-leftBtn2.addEventListener('click',() => {
+leftBtn2.addEventListener('click', () => {
     sliderRPG('left')
 })
 rightBtn2.addEventListener('click', () => {
@@ -326,13 +327,13 @@ function sliderRPG(direction){
     const totalGenres = genres.length
 
     if (direction === 'right') {
-        if (currentIndex < totalGenres - 1){
-            currentIndex++
+        if (currentIndex2 < totalGenres - 1){
+            currentIndex2++
         }
     } else if(direction === 'left'){
-        if(currentIndex > 0){
-            currentIndex--
+        if(currentIndex2 > 0){
+            currentIndex2--
         }
     }
-    sliderRPG.style.transform = `translateX(-${gameGWidth * currentIndex}px)`
+    sliderRPG.style.transform = `translateX(-${gameGWidth * currentIndex2}px)`
 }
