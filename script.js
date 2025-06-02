@@ -54,13 +54,13 @@ window.onload = function loading() {
     }, 999)
 }
 
-async function getGenres(url) {
-    main2.innerHTML = ''
+// async function getGenres(url) {
+//     main2.innerHTML = ''
     
-    const res = await fetch(url)
-    const data = await res.json()
-    showGenres(data.results)
-}
+//     const res = await fetch(url)
+//     const data = await res.json()
+//     showGenres(data.results)
+// }
 
 //Get initial games
 // getGames(API_URL)
@@ -124,30 +124,30 @@ function showGames(games) {
     })
 }
 
-function showGenres(games) {
-    games.forEach((game) => {
-        const {name, image_background,slug} = game
+// function showGenres(games) {
+//     games.forEach((game) => {
+//         const {name, image_background,slug} = game
 
-        const genreEl = document.createElement('div')
-        genreEl.classList.add('gameG')
-        genreEl.innerHTML = `
-            <div class="game-img">
-                <img src="${image_background ? image_background: 'https://media.istockphoto.com/id/1472933890/vector/no-image-vector-symbol-missing-available-icon-no-gallery-for-this-moment-placeholder.jpg?s=612x612&w=0&k=20&c=Rdn-lecwAj8ciQEccm0Ep2RX50FCuUJOaEM8qQjiLL0='}">
-            </div>
-            <div class="game-info">
-                <h3>${name}</h3>
-            </div>
-        `
-        genreEl.addEventListener('click', () => {
-            main2.innerHTML=''
-            const genreName = slug.toLowerCase()
-            console.log(`genre clicked ${genreName}`)
-            const API_GENRE_NAME = `https://api.rawg.io/api/games?genres=${genreName}&key=${API_KEY}`
-            getGames(API_GENRE_NAME)
-        })
-        main2.appendChild(genreEl)
-    })
-}
+//         const genreEl = document.createElement('div')
+//         genreEl.classList.add('gameG')
+//         genreEl.innerHTML = `
+//             <div class="game-img">
+//                 <img src="${image_background ? image_background: 'https://media.istockphoto.com/id/1472933890/vector/no-image-vector-symbol-missing-available-icon-no-gallery-for-this-moment-placeholder.jpg?s=612x612&w=0&k=20&c=Rdn-lecwAj8ciQEccm0Ep2RX50FCuUJOaEM8qQjiLL0='}">
+//             </div>
+//             <div class="game-info">
+//                 <h3>${name}</h3>
+//             </div>
+//         `
+//         genreEl.addEventListener('click', () => {
+//             main2.innerHTML=''
+//             const genreName = slug.toLowerCase()
+//             console.log(`genre clicked ${genreName}`)
+//             const API_GENRE_NAME = `https://api.rawg.io/api/games?genres=${genreName}&key=${API_KEY}`
+//             getGames(API_GENRE_NAME)
+//         })
+//         main2.appendChild(genreEl)
+//     })
+// }
 
 function getClassByRate(rate){
     if(rate >= 4) {
@@ -248,13 +248,13 @@ function getRandomGames() {
 }
 
 //still work in progress below
-genre.addEventListener('click', () => {
-    title.innerText = "Browse by Genres"
-    main.innerHTML = ''
-    isGenre = true
+// genre.addEventListener('click', () => {
+//     title.innerText = "Browse by Genres"
+//     main.innerHTML = ''
+//     isGenre = true
     
-    getGenres(API_GENRES)
-})
+//     getGenres(API_GENRES)
+// })
 
 // gameGenre.addEventListener('click', () => {
 //     console.log('gameG clicked')
@@ -417,4 +417,81 @@ function sliderRPG(direction){
         }
     }
     sliderRPG.style.transform = `translateX(-${gameGWidth * currentIndex}px)`
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//need to test the below, and delete the duplicates above
+async function getGenres(url) {
+    main.innerHTML = ''
+    const res = await fetch(url)
+    const data = await res.json()
+    showGenres(data.results)
+}
+
+function showGenres(genres) {
+    genres.forEach((genre) => {
+        const { name, image_background, id } = genre
+
+        const genreEl = document.createElement('div')
+        genreEl.classList.add('genre')
+        genreEl.innerHTML = `
+            <div class="game-img">
+                <img src="${image_background ? image_background : 'https://media.istockphoto.com/id/1472933890/vector/no-image-vector-symbol-missing-available-icon-no-gallery-for-this-moment-placeholder.jpg?s=612x612&w=0&k=20&c=Rdn-lecwAj8ciQEccm0Ep2RX50FCuUJOaEM8qQjiLL0='}">
+            </div>
+            <div class="game-info">
+                <h3>${name}</h3>
+            </div>
+        `
+        genreEl.addEventListener('click', () => {
+            isGenre = true
+            getGamesByGenre(id,name)
+        })
+
+        main.appendChild(genreEl)
+
+    })
+}
+
+genre.addEventListener('click', () => {
+    page = 1
+    title.innerText = "Browse by Genres"
+    counter.innerHTML = `${page}`
+    const API_GENRES = `https://api.rawg.io/api/genres?key=${API_KEY}`
+    
+    getGenres(API_GENRES)
+
+    document.getElementById("prev").style.display = 'none'
+    document.getElementById("counter").style.display = 'none'
+    document.getElementById("next").style.display = 'none'
+})
+
+let currentGenreId = null
+let currentGenreName = null
+async function getGamesByGenre(id, name) {
+    main.innerHTML = ''
+    currentGenreId = id
+    currentGenreName = name
+    const url = `https://api.rawg.io/api/genres/${id}?key=${API_KEY}`
+
+    const res = await fetch(url)
+    const data = await res.json()
+
+    title.innerHTML = `Browsing by ${name} Games`
+    document.getElementById("prev").style.display = 'block'
+    document.getElementById("counter").style.display = 'block'
+    document.getElementById("next").style.display = 'block'
+    
+    showGames(data.results)
 }
