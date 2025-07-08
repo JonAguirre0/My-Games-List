@@ -44,9 +44,12 @@ let page = 1
 let isTopRated = false
 let isSearchTerm = false
 let isGenre = false
+let currentGenreId = null
+let currentGenreName = null
 let genreName = ''
 
 
+//The loading Screen
 window.onload = function loading() {
     setTimeout(function() {
         document.getElementById('loader').style.display = "none"
@@ -54,13 +57,58 @@ window.onload = function loading() {
     }, 999)
 }
 
-// async function getGenres(url) {
-//     main2.innerHTML = ''
+//Gets the Genres
+async function getGenres(url) {
+    main.innerHTML = ''
+    const res = await fetch(url)
+    const data = await res.json()
     
-//     const res = await fetch(url)
-//     const data = await res.json()
-//     showGenres(data.results)
-// }
+    showGenres(data.results)
+}
+
+//Displays the Genres and gets the id and name of clicked genre
+function showGenres(genres) {
+    genres.forEach((genre) => {
+        const { id, name } = genre
+
+        const genreEl = document.createElement('div')
+        genreEl.classList.add('genre')
+        genreEl.innerHTML = `
+            <div class="genre-info">
+                <h3>${name}</h3>
+            </div> 
+        `
+
+        genreEl.addEventListener('click', () => {
+            isGenre = true
+            getGamesByGenre(id,name)
+        })
+
+        main.appendChild(genreEl)
+    })
+}
+
+//gets the games based off the clicked genre by id and name and displays it by calling showGames(data.results)
+async function getGamesByGenre(genreId,name) {
+    main.innerHTML= ''
+    currentGenreId = genreId
+    currentGenreName = name
+    const url = `https://api.rawg.io/api/games?genres=${genreId}&key=${API_KEY}&page=${page}`
+    
+    const res = await fetch(url)
+    const data = await res.json()
+
+    title.innerHTML = `Browsing by ${name} Movies`
+    document.getElementById("prev").style.display = 'block'
+    document.getElementById("counter").style.display = 'block'
+    document.getElementById("next").style.display = 'block'
+
+    const gamesDescription = await Promise.all(data.results.map(async (game) => {
+        const gameDescription = await getGameDescription(game)
+        return gameDescription
+    })) 
+    showGames(data.results)
+}
 
 //Get initial games
 // getGames(API_URL)
@@ -124,6 +172,7 @@ function showGames(games) {
     })
 }
 
+//below is old stuff where i was trying to create a slider effect for the genres
 // function showGenres(games) {
 //     games.forEach((game) => {
 //         const {name, image_background,slug} = game
@@ -247,18 +296,18 @@ function getRandomGames() {
     getGames(API_URL_RANDOM)
 }
 
-//still work in progress below
-// genre.addEventListener('click', () => {
-//     title.innerText = "Browse by Genres"
-//     main.innerHTML = ''
-//     isGenre = true
+genre.addEventListener('click', () => {
+    page = 1
+    counter.innerHTML = `${page}`
+    title.innerHTML = "Browse by Genre"
+    const API_GENRES = `https://api.rawg.io/api/genres?key=${API_KEY}`
     
-//     getGenres(API_GENRES)
-// })
+    getGenres(API_GENRES)
 
-// gameGenre.addEventListener('click', () => {
-//     console.log('gameG clicked')
-// })
+    document.getElementById("prev").style.display = 'none'
+    document.getElementById("counter").style.display = 'none'
+    document.getElementById("next").style.display = 'none'
+})
 
 next.addEventListener('click', () => {
     page++
@@ -330,168 +379,4 @@ function getPrevPage() {
         })
         // title.innerHTML = `Upcoming Games Page ${page}`
     }
-}
-
-
-
-
-
-
-
-
-
-
-
-const leftBtn = document.querySelector(".leftBtn")
-const rightBtn = document.querySelector('.rightBtn')
-const leftBtn2 = document.querySelector(".leftBtn2")
-const rightBtn2 = document.querySelector('.rightBtn2')
-let currentIndex = 0
-//let currentIndex2 = 0
-leftBtn.addEventListener('click', () => {
-    slider1('left')
-})
-rightBtn.addEventListener('click', () => {
-    slider1('right')
-})
-leftBtn2.addEventListener('click', () => {
-    sliderRPG('left')
-})
-rightBtn2.addEventListener('click', () => {
-    sliderRPG('right')
-})
-function slider1(direction){
-    const slider = document.querySelector('.slider')
-    const genres = document.querySelectorAll('.gameG')
-    const gameGWidth = genres[0].offsetWidth
-    const totalGenres = genres.length
-
-    if (direction === 'right') {
-        if (currentIndex < totalGenres - 1){
-            currentIndex++
-        } else {
-            currentIndex = 0
-        }
-    } else if(direction === 'left'){
-        if(currentIndex > 0){
-            currentIndex--
-        } else {
-            currentIndex = totalGenres - 1
-        }
-    }
-    slider.style.transform = `translateX(-${gameGWidth * currentIndex}px)`
-}
-function sliderRPG(direction){
-    const sliderRPG = document.querySelector('.sliderRPG')
-    const genres = document.querySelectorAll('.gameG2')
-    const gameGWidth = genres[0].offsetWidth
-    const totalGenres = genres.length
-
-    // if (currentIndex2 === totalGenres -7) {
-    //     rightBtn2.disabled = true
-    //     rightBtn2.style.cursor = 'not-allowed'
-    // } else {
-    //     rightBtn2.disabled = false
-    //     rightBtn2.style.cursor = 'pointer'
-    // }
-
-    // if(currentIndex2===0) {
-    //     leftBtn2.disabled = true
-    //     leftBtn2.style.cursor = 'not-allowed'
-    // } else {
-    //     leftBtn2.disabled = false
-    //     leftBtn2.style.cursor = 'pointer'
-    // }
-    // let currentIndex2 = 0
-    if (direction === 'right') {
-        if (currentIndex < totalGenres - 1){
-            currentIndex++
-        } else {
-            currentIndex = 0
-        }
-    } else if(direction === 'left'){
-        if(currentIndex > 0){
-            currentIndex--
-        } else {
-            currentIndex = totalGenres - 1
-        }
-    }
-    sliderRPG.style.transform = `translateX(-${gameGWidth * currentIndex}px)`
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//need to test the below, and delete the duplicates above
-async function getGenres(url) {
-    main.innerHTML = ''
-    const res = await fetch(url)
-    const data = await res.json()
-    showGenres(data.results)
-}
-
-function showGenres(genres) {
-    genres.forEach((genre) => {
-        const { name, image_background, id } = genre
-
-        const genreEl = document.createElement('div')
-        genreEl.classList.add('genre')
-        genreEl.innerHTML = `
-            <div class="game-img">
-                <img src="${image_background ? image_background : 'https://media.istockphoto.com/id/1472933890/vector/no-image-vector-symbol-missing-available-icon-no-gallery-for-this-moment-placeholder.jpg?s=612x612&w=0&k=20&c=Rdn-lecwAj8ciQEccm0Ep2RX50FCuUJOaEM8qQjiLL0='}">
-            </div>
-            <div class="game-info">
-                <h3>${name}</h3>
-            </div>
-        `
-        genreEl.addEventListener('click', () => {
-            isGenre = true
-            getGamesByGenre(id,name)
-        })
-
-        main.appendChild(genreEl)
-
-    })
-}
-
-genre.addEventListener('click', () => {
-    page = 1
-    title.innerText = "Browse by Genres"
-    counter.innerHTML = `${page}`
-    const API_GENRES = `https://api.rawg.io/api/genres?key=${API_KEY}`
-    
-    getGenres(API_GENRES)
-
-    document.getElementById("prev").style.display = 'none'
-    document.getElementById("counter").style.display = 'none'
-    document.getElementById("next").style.display = 'none'
-})
-
-let currentGenreId = null
-let currentGenreName = null
-async function getGamesByGenre(id, name) {
-    main.innerHTML = ''
-    currentGenreId = id
-    currentGenreName = name
-    const url = `https://api.rawg.io/api/genres/${id}?key=${API_KEY}`
-
-    const res = await fetch(url)
-    const data = await res.json()
-
-    title.innerHTML = `Browsing by ${name} Games`
-    document.getElementById("prev").style.display = 'block'
-    document.getElementById("counter").style.display = 'block'
-    document.getElementById("next").style.display = 'block'
-    
-    showGames(data.results)
 }
