@@ -98,7 +98,7 @@ async function getGamesByGenre(genreId,name) {
     const res = await fetch(url)
     const data = await res.json()
 
-    title.innerHTML = `Browsing by ${name} Movies`
+    title.innerHTML = `Browsing by ${name} Games`
     document.getElementById("prev").style.display = 'block'
     document.getElementById("counter").style.display = 'block'
     document.getElementById("next").style.display = 'block'
@@ -108,6 +108,22 @@ async function getGamesByGenre(genreId,name) {
         return gameDescription
     })) 
     showGames(data.results)
+    updatePrevNext(data.previous, data.next)
+}
+
+function updatePrevNext(prevPage, nextPage) {
+    if (page <= 1) {
+      document.getElementById('prev').disabled = true
+    } else {
+        document.getElementById('prev').disabled = false
+    }
+
+    if (!nextPage === null) {
+        document.getElementById('next').disabled = true
+    } else {
+        document.getElementById('next').disabled = false
+    }
+ 
 }
 
 //Get initial games
@@ -120,7 +136,8 @@ async function getGames(url) {
     const res = await fetch(url)
     const data = await res.json()
     document.getElementById('next').disabled = !data.next
-    document.getElementById('prev').disabled = !data.previous
+    //below is the issue for disabling the prev after selecting the genre
+    //document.getElementById('prev').disabled = !data.previous
     
     // const res = await fetch(url)
     // const data = await res.json()
@@ -313,6 +330,7 @@ next.addEventListener('click', () => {
     page++
     getNextPage()
     counter.innerHTML = `${page}`
+    console.log("Next clicked")
 })
 
 function getNextPage() {
@@ -333,9 +351,7 @@ function getNextPage() {
             document.getElementById('background').style.display = "block"
         })
     } else if(isGenre) {
-        const genreName = slug.toLowerCase()
-        const API_GENRE_NAME = `https://api.rawg.io/api/games?genres=${genreName}&page=${page}&key=${API_KEY}`
-        getGames(API_GENRE_NAME)
+        getGamesByGenre(currentGenreId,currentGenreName)
     } else {
         document.getElementById('loader').style.display = "block"
         const API_URL_UPCOMING = `https://api.rawg.io/api/games?key=${API_KEY}&ordering=released&dates=${todaysDate},${endOfYear}&page=${page}`
@@ -348,12 +364,15 @@ function getNextPage() {
 }
 
 prev.addEventListener('click', () => {
-    page--
+    //page--
     getPrevPage()
     counter.innerHTML = `${page}`
+    console.log("prev clicked")
 })
 
 function getPrevPage() {
+    page--
+    if (page < 1) page = 1
     if (isTopRated) {
         document.getElementById('loader').style.display = "block"
         const API_URL_TOPRATED = `https://api.rawg.io/api/games?key=${API_KEY}&ordering=-metacritic&page=${page}`
@@ -370,7 +389,10 @@ function getPrevPage() {
             document.getElementById('loader').style.display = "none"
             document.getElementById('background').style.display = "block"
         })
-    } else {
+    } else if(isGenre) {
+        getGamesByGenre(currentGenreId,currentGenreName)
+    }
+    else {
         document.getElementById('loader').style.display = "block"
         const API_KEY_UPCOMING = `https://api.rawg.io/api/games?key=${API_KEY}&ordering=released&dates=${todaysDate},${endOfYear}&page=${page}`
         getGames(API_KEY_UPCOMING).then(() => {
