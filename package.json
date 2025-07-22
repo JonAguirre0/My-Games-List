@@ -15,5 +15,9 @@
   "bugs": {
     "url": "https://github.com/JonAguirre0/My-Games-List/issues"
   },
-  "homepage": "https://github.com/JonAguirre0/My-Games-List#readme"
+  "homepage": "https://github.com/JonAguirre0/My-Games-List#readme",
+  "dependencies": {
+    "express": "^5.1.0",
+    "node-cache": "^5.1.2"
+  }
 }

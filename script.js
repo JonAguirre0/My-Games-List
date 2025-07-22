@@ -23,6 +23,11 @@ const title = document.getElementById('title')
 const genre = document.querySelector('.genre')
 const gameGenre = document.querySelector('.gameG')
 
+const NodeCache = require('node-cache')
+const gameCache = new NodeCache({stdTTL: 3600})  //time to live set to one hour
+const express = require('express')
+const app = express()
+
 const today = new Date()
 const year = today.getFullYear()
 const month = String(today.getMonth() + 1).padStart(2,'0')
