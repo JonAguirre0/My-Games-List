@@ -23,17 +23,18 @@ const title = document.getElementById('title')
 const genre = document.querySelector('.genre')
 const gameGenre = document.querySelector('.gameG')
 
-const NodeCache = require('node-cache')
-const gameCache = new NodeCache({stdTTL: 3600})  //time to live set to one hour
-const express = require('express')
-const app = express()
-
 const today = new Date()
 const year = today.getFullYear()
 const month = String(today.getMonth() + 1).padStart(2,'0')
 const day = String(today.getDate()).padStart(2,'0')
 const todaysDate = `${year}-${month}-${day}`
 const endOfYear = `${year}-12-31`
+
+// fetch('/api/games')
+//     .then(res => res.json())
+//     .then(data => {
+//         console.log('data from backend')
+//     })
 
 //Provide API key below
 const API_KEY = '?'
@@ -98,10 +99,15 @@ async function getGamesByGenre(genreId,name) {
     main.innerHTML= ''
     currentGenreId = genreId
     currentGenreName = name
-    const url = `https://api.rawg.io/api/games?genres=${genreId}&key=${API_KEY}&page=${page}`
+    // const url = `https://api.rawg.io/api/games?genres=${genreId}&key=${API_KEY}&page=${page}`
     
-    const res = await fetch(url)
+    // const res = await fetch(url)
+    // const data = await res.json()
+
+    const res = await fetch(`/api/games?genre=${genreId}&page=${page}`)
     const data = await res.json()
+    console.log("fetched from backend", data)
+
 
     title.innerHTML = `Browsing by ${name} Games`
     document.getElementById("prev").style.display = 'block'
