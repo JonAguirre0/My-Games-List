@@ -1,0 +1,19 @@
+{
+  "name": "my-game-list",
+  "version": "1.0.0",
+  "description": "",
+  "main": "script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JonAguirre0/My-Games-List.git"
+  },
+  "author": "Jonathan Aguirre",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JonAguirre0/My-Games-List/issues"
+  },
+  "homepage": "https://github.com/JonAguirre0/My-Games-List#readme"
+}
