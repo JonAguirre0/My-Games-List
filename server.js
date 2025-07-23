@@ -14,15 +14,15 @@ app.get('/api/games', async (req, res) => {
     if (gameCache.has(cacheKey)) {
         console.log("returning from cache", cacheKey)
         return res.json(gameCache.get(cacheKey))
+    } else {
+        const url = `https://api.rawg.io/api/games?genres=${genre}&key=${api_key}&page=${page}`
+        const response = await fetch(url)
+        const data = await response.json()
+
+        gameCache.set(cacheKey, data.results)
+        res.json(data.results)
+        console.log("returning data from API and cached", cacheKey)
     }
-
-    const url = `https://api.rawg.io/api/games?genres=${genre}&key=${api_key}&page=${page}`
-    const response = await fetch(url)
-    const data = await response.json()
-
-    gameCache.set(cacheKey, data.results)
-    res.json(data.results)
-    console.log("returning data from API and cached", cacheKey)
 })
 
 app.use(express.static('public'))

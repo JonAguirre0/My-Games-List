@@ -147,11 +147,7 @@ async function getGames(url) {
     const res = await fetch(url)
     const data = await res.json()
     document.getElementById('next').disabled = !data.next
-    //below is the issue for disabling the prev after selecting the genre
-    //document.getElementById('prev').disabled = !data.previous
     
-    // const res = await fetch(url)
-    // const data = await res.json()
     //.map() is used to loop over each "game" in the data.results array and perform an operation on each game. Promise.all() is used since .map() creates an array of promises, Promise.all() is used to wait for all promises to resolve before continuing.
     const gamesDescription = await Promise.all(data.results.map(async (game) => {
         const gameDescription = await getGameDescription(game)
@@ -199,32 +195,6 @@ function showGames(games) {
         main.appendChild(gameEl)
     })
 }
-
-//below is old stuff where i was trying to create a slider effect for the genres
-// function showGenres(games) {
-//     games.forEach((game) => {
-//         const {name, image_background,slug} = game
-
-//         const genreEl = document.createElement('div')
-//         genreEl.classList.add('gameG')
-//         genreEl.innerHTML = `
-//             <div class="game-img">
-//                 <img src="${image_background ? image_background: 'https://media.istockphoto.com/id/1472933890/vector/no-image-vector-symbol-missing-available-icon-no-gallery-for-this-moment-placeholder.jpg?s=612x612&w=0&k=20&c=Rdn-lecwAj8ciQEccm0Ep2RX50FCuUJOaEM8qQjiLL0='}">
-//             </div>
-//             <div class="game-info">
-//                 <h3>${name}</h3>
-//             </div>
-//         `
-//         genreEl.addEventListener('click', () => {
-//             main2.innerHTML=''
-//             const genreName = slug.toLowerCase()
-//             console.log(`genre clicked ${genreName}`)
-//             const API_GENRE_NAME = `https://api.rawg.io/api/games?genres=${genreName}&key=${API_KEY}`
-//             getGames(API_GENRE_NAME)
-//         })
-//         main2.appendChild(genreEl)
-//     })
-// }
 
 function getClassByRate(rate){
     if(rate >= 4) {
