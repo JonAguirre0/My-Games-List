@@ -20,9 +20,8 @@ app.get('/api/games', async (req, res) => {
     const response = await fetch(url)
     const data = await response.json()
 
-    //maybe below put data.results so that it saves the all results of the choosen page
-    gameCache.set(cacheKey, data)
-    res.json(data)
+    gameCache.set(cacheKey, data.results)
+    res.json(data.results)
     console.log("returning data from API and cached", cacheKey)
 })
 
