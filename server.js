@@ -4,7 +4,7 @@ const express = require('express')
 
 const gameCache = new NodeCache({stdTTL: 3600})  //time to live set to one hour
 const app = express()
-const PORT = 5501
+const port = process.env.PORT
 const api_key = process.env.API_KEY
 
 app.get('/api/games', async (req, res) => {
@@ -26,4 +26,4 @@ app.get('/api/games', async (req, res) => {
 })
 
 app.use(express.static('public'))
-app.listen(PORT, () => console.log(`Server is running on Port ${PORT}`))
+app.listen(port, () => console.log(`Server is running on Port ${port}`))
