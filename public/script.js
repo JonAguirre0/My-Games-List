@@ -46,13 +46,39 @@ const API_URL_Search = `https://api.rawg.io/api/games?key=${API_KEY}&search=`
 const API_URL_RANDOM = `https://api.rawg.io/api/games?key=${API_KEY}&page=`
 const API_GENRES = `https://api.rawg.io/api/genres?key=${API_KEY}`
 
+counter.innerHTML = 1
 let page = 1
 let isTopRated = false
 let isSearchTerm = false
 let isGenre = false
+let upcoming = true
+let isRandom = false
 let currentGenreId = null
 let currentGenreName = null
 let genreName = ''
+let currentType = 'upcoming'
+let currentParams = {}
+
+const API = 'http://localhost:5501'
+
+fetchAndDisplay('upcoming', page)
+
+async function fetchAndDisplay(type = 'upcoming', page = 1, extraParams = {}) {
+    main.innerHTML = ''
+    const params = new URLSearchParams({page, ...extraParams})
+    const res = await fetch(`/${type}?${params.toString()}`)
+    const data = await res.json()
+
+    if(type === 'genres') {
+        showGenres(data.results)
+    } else {
+        showGames(data.results)
+    }
+
+    document.getElementById('next').disabled = !data.next
+    document.getElementById('prev').disabled = !data.previous
+    console.log("Fetched from backend", data.results)
+}
 
 
 //The loading Screen
@@ -139,7 +165,7 @@ function updatePrevNext(prevPage, nextPage) {
 
 //Get initial games
 // getGames(API_URL)
-getGames(API_URL_UPCOMING)
+//getGames(API_URL_UPCOMING)
 
 async function getGames(url) {
     main.innerHTML = ''

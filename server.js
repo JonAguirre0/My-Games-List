@@ -7,22 +7,40 @@ const app = express()
 const port = process.env.PORT
 const api_key = process.env.API_KEY
 
-app.get('/api/games', async (req, res) => {
-    const {genre, page = 1} = req.query
-    const cacheKey = `genre_${genre}_page_${page}`
+const today = new Date()
+const year = today.getFullYear()
+const month = String(today.getMonth() + 1).padStart(2,'0')
+const day = String(today.getDate()).padStart(2,'0')
+const todaysDate = `${year}-${month}-${day}`
+const endOfYear = `${year}-12-31`
 
-    if (gameCache.has(cacheKey)) {
-        console.log("returning from cache", cacheKey)
-        return res.json(gameCache.get(cacheKey))
-    } else {
-        const url = `https://api.rawg.io/api/games?genres=${genre}&key=${api_key}&page=${page}`
-        const response = await fetch(url)
-        const data = await response.json()
+const API_LINK = 'https://api.rawg.io/api'
 
-        gameCache.set(cacheKey, data.results)
-        res.json(data.results)
-        console.log("returning data from API and cached", cacheKey)
+async function fetchAndCache(key, url) {
+    const cached = gameCache.get(key)
+    if(cached) {
+        console.log(`Cache hit: ${key}, fetching from Cache`)
+        return cached
     }
+    console.log(`Cache miss: ${key}, fetching ${url}, set into Cache`)
+    const res = await fetch(url)
+    const data = await res.json()
+
+    const gameDescriptions = await Promise.all(data.results.map(async(game) => {
+        const desRes = await fetch(`${API_LINK}/games/${game.id}?key=${api_key}`)
+        const desData = await desRes.json()
+        return {...game, description: desData.description || 'No Description Available'}
+    }))
+    gameCache.set(key, {...data, results: gameDescriptions})
+    return {...data, results: gameDescriptions}
+}
+
+app.get('/upcoming', async(req, res) => {
+    const page = req.query.page
+    const cacheKey = `upcoming_games_page_${page}`
+    const url = `${API_LINK}/games?key=${api_key}&ordering=released&dates=${todaysDate},${endOfYear}&page=${page}`
+    const data = await fetchAndCache(cacheKey, url)
+    res.json(data)
 })
 
 app.use(express.static('public'))
