@@ -43,5 +43,13 @@ app.get('/upcoming', async(req, res) => {
     res.json(data)
 })
 
+app.get('/top_rated_games', async(req,res) => {
+    const page = req.query.page
+    const cacheKey = `top_rated_games_page${page}`
+    const url = `${API_LINK}/games?key=${api_key}&ordering=-metacritic&page=${page}`
+    const data = await fetchAndCache(cacheKey, url)
+    res.json(data)
+})
+
 app.use(express.static('public'))
 app.listen(port, () => console.log(`Server is running on Port ${port}`))

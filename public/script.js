@@ -298,12 +298,17 @@ topRated.addEventListener('click', () => {
 
     page = 1
     isTopRated = true
-    getGames(API_URL_TOPRATED).then(() => {
+    isSearchTerm = false
+    isGenre = false
+    isUpcoming = false
+    isRandom = false
+    title.innerHTML = "Top Rated Games"
+    counter.innerHTML = `${page}`
+    currentType = 'top_rated_games'
+    fetchAndDisplay(currentType, page).then(() => {
         document.getElementById('loader').style.display = "none"
         document.getElementById('background').style.display = "block"
     }) 
-    title.innerHTML = "Top Rated Games"
-    counter.innerHTML = `${page}`
 })
 
 random.addEventListener('click', () => {
@@ -334,78 +339,53 @@ genre.addEventListener('click', () => {
 })
 
 next.addEventListener('click', () => {
+    document.getElementById('loader').style.display = "block"
     page++
-    getNextPage()
+    fetchAndDisplay(currentType, page, currentParams).then(() => {
+        document.getElementById('loader').style.display = "none"
+        document.getElementById('background').style.display = "block"
+    })
     counter.innerHTML = `${page}`
     console.log("Next clicked")
 })
 
 function getNextPage() {
     if (isTopRated) {
-        document.getElementById('loader').style.display = "block"
-        const API_URL_TOPRATED = `https://api.rawg.io/api/games?key=${API_KEY}&ordering=-metacritic&page=${page}`
-        getGames(API_URL_TOPRATED).then(() => {
-            document.getElementById('loader').style.display = "none"
-            document.getElementById('background').style.display = "block"
-        })
-        // title.innerHTML = `Top Rated Games Page ${page}`
+        title.innerHTML = `Top Rated Games Page ${page}`
     } else if (isSearchTerm) {
-        document.getElementById('loader').style.display = "block"
         const searchTerm = search.value
-        const API_URL_Search = `https://api.rawg.io/api/games?key=${API_KEY}&page=${page}&search=${searchTerm}`
-        getGames(API_URL_Search).then(() => {
-            document.getElementById('loader').style.display = "none"
-            document.getElementById('background').style.display = "block"
-        })
+        title.innerHTML = `${searchTerm}`
     } else if(isGenre) {
-        getGamesByGenre(currentGenreId,currentGenreName)
+        title.innerHTML = `Browsing by ${currentGenreName} games`
     } else {
-        document.getElementById('loader').style.display = "block"
-        const API_URL_UPCOMING = `https://api.rawg.io/api/games?key=${API_KEY}&ordering=released&dates=${todaysDate},${endOfYear}&page=${page}`
-        getGames(API_URL_UPCOMING).then(() => {
-            document.getElementById('loader').style.display = "none"
-            document.getElementById('background').style.display = "block"
-        })
-        // title.innerHTML = `Upcoming Games Page ${page}`
+        title.innerHTML = `Upcoming Games Page ${page}`
     }
 }
 
 prev.addEventListener('click', () => {
-    //page--
+    document.getElementById('loader').style.display = "block"
+    page--
     getPrevPage()
     counter.innerHTML = `${page}`
+    fetchAndDisplay(currentType, page, currentParams).then (() => {
+        document.getElementById('loader').style.display = "none"
+        document.getElementById('background').style.display = "block"
+    })
     console.log("prev clicked")
 })
 
 function getPrevPage() {
-    page--
     if (page < 1) page = 1
     if (isTopRated) {
-        document.getElementById('loader').style.display = "block"
-        const API_URL_TOPRATED = `https://api.rawg.io/api/games?key=${API_KEY}&ordering=-metacritic&page=${page}`
-        getGames(API_URL_TOPRATED).then(() => {
-            document.getElementById('loader').style.display = "none"
-            document.getElementById('background').style.display = "block"
-        })
-        // title.innerHTML = `Top Rated Games Page ${page}`
+        title.innerHTML = `Top Rated Games Page ${page}`
     } else if(isSearchTerm) {
         document.getElementById('loader').style.display = 'block'
         const searchTerm = search.value
-        const API_URL_Search = `https://api.rawg.io/api/games?key=${API_KEY}&page=${page}&search=${searchTerm}`
-        getGames(API_URL_Search).then(() => {
-            document.getElementById('loader').style.display = "none"
-            document.getElementById('background').style.display = "block"
-        })
+        title.innerHTML = `${searchTerm}`
     } else if(isGenre) {
-        getGamesByGenre(currentGenreId,currentGenreName)
+        title.innerHTML = `Browsing by ${currentGenreName} games`
     }
     else {
-        document.getElementById('loader').style.display = "block"
-        const API_KEY_UPCOMING = `https://api.rawg.io/api/games?key=${API_KEY}&ordering=released&dates=${todaysDate},${endOfYear}&page=${page}`
-        getGames(API_KEY_UPCOMING).then(() => {
-            document.getElementById('loader').style.display = "none"
-            document.getElementById('background').style.display = "block"
-        })
-        // title.innerHTML = `Upcoming Games Page ${page}`
+        title.innerHTML = `Upcoming Games for ${year}`
     }
 }
