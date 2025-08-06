@@ -51,7 +51,7 @@ let page = 1
 let isTopRated = false
 let isSearchTerm = false
 let isGenre = false
-let upcoming = true
+let isUpcoming = true
 let isRandom = false
 let currentGenreId = null
 let currentGenreName = null
@@ -312,6 +312,14 @@ topRated.addEventListener('click', () => {
 })
 
 random.addEventListener('click', () => {
+    document.getElementById('loader').style.display = "block"
+
+    isRandom = true
+    isTopRated = false
+    isSearchTerm = false
+    isGenre = false
+    isUpcoming = false
+
     getRandomGames()
     title.innerHTML = "Random Games"
     counter.innerHTML = `${page}`
@@ -321,8 +329,16 @@ random.addEventListener('click', () => {
 })
 function getRandomGames() {
     const randomPage = Math.floor(Math.random() * 500) + 1
-    const API_URL_RANDOM = `https://api.rawg.io/api/games?key=${API_KEY}&page=${randomPage}`
-    getGames(API_URL_RANDOM)
+    isRandom = true
+    isTopRated = false
+    isSearchTerm = false
+    isGenre = false
+    isUpcoming = false
+    currentType = 'random'
+    fetchAndDisplay(currentType, randomPage).then (() => {
+        document.getElementById('loader').style.display = "none"
+        document.getElementById('background').style.display = "block"
+    })
 }
 
 genre.addEventListener('click', () => {

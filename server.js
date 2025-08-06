@@ -51,5 +51,13 @@ app.get('/top_rated_games', async(req,res) => {
     res.json(data)
 })
 
+app.get('/random', async(req, res) => {
+    const page = req.query.page
+    const cacheKey = `random_games_page${page}`
+    const url = `${API_LINK}/games?key=${api_key}&page=${page}`
+    const data = await fetchAndCache(cacheKey, url)
+    res.json(data)
+})
+
 app.use(express.static('public'))
 app.listen(port, () => console.log(`Server is running on Port ${port}`))
