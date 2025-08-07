@@ -30,16 +30,6 @@ const day = String(today.getDate()).padStart(2,'0')
 const todaysDate = `${year}-${month}-${day}`
 const endOfYear = `${year}-12-31`
 
-//Provide API key below
-const API_KEY = '?'
-const API_URL = `https://api.rawg.io/api/games?key=${API_KEY}`
-const API_URL_TOPRATED = `https://api.rawg.io/api/games?key=${API_KEY}&ordering=-metacritic`
-const API_URL_USERRATING = `https://api.rawg.io/api/games?key=${API_KEY}&ordering=-rating`
-const API_URL_UPCOMING = `https://api.rawg.io/api/games?key=${API_KEY}&ordering=released&dates=${todaysDate},${endOfYear}`
-const API_URL_Search = `https://api.rawg.io/api/games?key=${API_KEY}&search=`
-const API_URL_RANDOM = `https://api.rawg.io/api/games?key=${API_KEY}&page=`
-const API_GENRES = `https://api.rawg.io/api/genres?key=${API_KEY}`
-
 counter.innerHTML = 1
 let page = 1
 let isTopRated = false
@@ -54,6 +44,14 @@ let currentType = 'upcoming'
 let currentParams = {}
 
 const API = 'http://localhost:5501'
+
+//The loading Screen
+window.onload = function loading() {
+    setTimeout(function() {
+        document.getElementById('loader').style.display = "none"
+        document.getElementById('background').style.display = "block"
+    }, 999)
+}
 
 //Get initial games
 fetchAndDisplay('upcoming', page)
@@ -73,15 +71,6 @@ async function fetchAndDisplay(type = 'upcoming', page = 1, extraParams = {}) {
     document.getElementById('next').disabled = !data.next
     document.getElementById('prev').disabled = !data.previous
     console.log("Fetched from backend", data.results)
-}
-
-
-//The loading Screen
-window.onload = function loading() {
-    setTimeout(function() {
-        document.getElementById('loader').style.display = "none"
-        document.getElementById('background').style.display = "block"
-    }, 999)
 }
 
 //Displays the Genres and gets the id and name of clicked genre
