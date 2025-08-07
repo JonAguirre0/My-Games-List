@@ -5,6 +5,7 @@ const express = require('express')
 const gameCache = new NodeCache({stdTTL: 3600})  //time to live set to one hour
 const app = express()
 const port = process.env.PORT
+//Provide API Key below
 const api_key = process.env.API_KEY
 
 const today = new Date()
