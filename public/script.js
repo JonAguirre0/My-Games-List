@@ -30,12 +30,6 @@ const day = String(today.getDate()).padStart(2,'0')
 const todaysDate = `${year}-${month}-${day}`
 const endOfYear = `${year}-12-31`
 
-// fetch('/api/games')
-//     .then(res => res.json())
-//     .then(data => {
-//         console.log('data from backend')
-//     })
-
 //Provide API key below
 const API_KEY = '?'
 const API_URL = `https://api.rawg.io/api/games?key=${API_KEY}`
@@ -61,6 +55,7 @@ let currentParams = {}
 
 const API = 'http://localhost:5501'
 
+//Get initial games
 fetchAndDisplay('upcoming', page)
 
 async function fetchAndDisplay(type = 'upcoming', page = 1, extraParams = {}) {
@@ -89,15 +84,6 @@ window.onload = function loading() {
     }, 999)
 }
 
-//Gets the Genres
-async function getGenres(url) {
-    main.innerHTML = ''
-    const res = await fetch(url)
-    const data = await res.json()
-    
-    showGenres(data.results)
-}
-
 //Displays the Genres and gets the id and name of clicked genre
 function showGenres(genres) {
     genres.forEach((genre) => {
@@ -112,40 +98,23 @@ function showGenres(genres) {
         `
 
         genreEl.addEventListener('click', () => {
+            document.getElementById('loader').style.display = "block"
             isGenre = true
-            getGamesByGenre(id,name)
+            currentGenreName = name
+            currentType = 'games_by_genre'
+            currentParams = {genre: id}
+            fetchAndDisplay(currentType, page, currentParams).then(() => {
+                document.getElementById('loader').style.display = 'none'
+                document.getElementById('background').style.display = 'block'
+            })
+            title.innerHTML = `Browsing by ${name} games`
+            document.getElementById("prev").style.display = 'block'
+            document.getElementById("counter").style.display = 'block'
+            document.getElementById("next").style.display = 'block'
         })
 
         main.appendChild(genreEl)
     })
-}
-
-//gets the games based off the clicked genre by id and name and displays it by calling showGames(data.results)
-async function getGamesByGenre(genreId,name) {
-    main.innerHTML= ''
-    currentGenreId = genreId
-    currentGenreName = name
-    // const url = `https://api.rawg.io/api/games?genres=${genreId}&key=${API_KEY}&page=${page}`
-    
-    // const res = await fetch(url)
-    // const data = await res.json()
-
-    const res = await fetch(`/api/games?genre=${genreId}&page=${page}`)
-    const data = await res.json()
-    console.log("fetched from backend", data)
-
-
-    title.innerHTML = `Browsing by ${name} Games`
-    document.getElementById("prev").style.display = 'block'
-    document.getElementById("counter").style.display = 'block'
-    document.getElementById("next").style.display = 'block'
-
-    const gamesDescription = await Promise.all(data.results.map(async (game) => {
-        const gameDescription = await getGameDescription(game)
-        return gameDescription
-    })) 
-    showGames(data.results)
-    updatePrevNext(data.previous, data.next)
 }
 
 function updatePrevNext(prevPage, nextPage) {
@@ -162,10 +131,6 @@ function updatePrevNext(prevPage, nextPage) {
     }
  
 }
-
-//Get initial games
-// getGames(API_URL)
-//getGames(API_URL_UPCOMING)
 
 async function getGames(url) {
     main.innerHTML = ''
@@ -343,11 +308,16 @@ function getRandomGames() {
 
 genre.addEventListener('click', () => {
     page = 1
+    isGenre = true
+    isTopRated = false
+    isSearchTerm = false
+    isUpcoming = false
+    isRandom = false
     counter.innerHTML = `${page}`
     title.innerHTML = "Browse by Genre"
-    const API_GENRES = `https://api.rawg.io/api/genres?key=${API_KEY}`
     
-    getGenres(API_GENRES)
+    currentType = 'genres'
+    fetchAndDisplay(currentType, page)
 
     document.getElementById("prev").style.display = 'none'
     document.getElementById("counter").style.display = 'none'

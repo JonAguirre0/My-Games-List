@@ -59,5 +59,21 @@ app.get('/random', async(req, res) => {
     res.json(data)
 })
 
+app.get('/genres', async(req,res) => {
+    const cacheKey = `genrelist`
+    const url = `${API_LINK}/genres?key=${api_key}`
+    const data = await fetchAndCache(cacheKey, url)
+    res.json(data)
+})
+
+app.get('/games_by_genre', async(req, res) => {
+    const page = req.query.page
+    const genreId = req.query.genre
+    const cacheKey = `genre_${genreId}_page_${page}`
+    const url = `${API_LINK}/games?genres=${genreId}&key=${api_key}&page=${page}`
+    const data = await fetchAndCache(cacheKey, url)
+    res.json(data)
+})
+
 app.use(express.static('public'))
 app.listen(port, () => console.log(`Server is running on Port ${port}`))
