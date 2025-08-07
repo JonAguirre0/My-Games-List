@@ -106,50 +106,6 @@ function showGenres(genres) {
     })
 }
 
-function updatePrevNext(prevPage, nextPage) {
-    if (page <= 1) {
-      document.getElementById('prev').disabled = true
-    } else {
-        document.getElementById('prev').disabled = false
-    }
-
-    if (!nextPage === null) {
-        document.getElementById('next').disabled = true
-    } else {
-        document.getElementById('next').disabled = false
-    }
- 
-}
-
-async function getGames(url) {
-    main.innerHTML = ''
-    
-    const res = await fetch(url)
-    const data = await res.json()
-    document.getElementById('next').disabled = !data.next
-    
-    //.map() is used to loop over each "game" in the data.results array and perform an operation on each game. Promise.all() is used since .map() creates an array of promises, Promise.all() is used to wait for all promises to resolve before continuing.
-    const gamesDescription = await Promise.all(data.results.map(async (game) => {
-        const gameDescription = await getGameDescription(game)
-        return gameDescription
-    })) 
-    
-
-    showGames(gamesDescription)
-    // showGames(data.results)
-    counter.innerHTML = `${page}`
-}
-
-async function getGameDescription(game) {
-    const url = `https://api.rawg.io/api/games/${game.id}?key=${API_KEY}`
-    const res = await fetch(url)
-    const data = await res.json()
-    const description = data.description
-    game.description = description
-    return game
-    
-}
-
 function showGames(games) {
     games.forEach((game) => {
         const {name, background_image, metacritic, rating, description, released} = game
@@ -224,18 +180,20 @@ form.addEventListener('submit', (e) => {
 
     const searchTerm = search.value
     isSearchTerm = true
+    isTopRated = false
+    isGenre = false
+    isUpcoming = false
+    isRandom = false
+    page = 1
+    counter.innerHTML = `${page}`
 
     if(searchTerm && searchTerm !== '') {
-        getGames(API_URL_Search + searchTerm)
         title.innerHTML = `${searchTerm}`
 
         page = 1
-        counter.innerHTML = ''
-        // search.value = ''
-        //to get rid of the prev, counter, next elements since not needed
-        // prev.style.display = 'none'
-        // counter.style.display = 'none'
-        // next.style.display = 'none'
+        currentType = 'search'
+        currentParams = {search: searchTerm}
+        fetchAndDisplay(currentType, page, currentParams)
     } else {
         window.location.reload()
     }
@@ -363,4 +321,19 @@ function getPrevPage() {
     else {
         title.innerHTML = `Upcoming Games for ${year}`
     }
+}
+
+function updatePrevNext(prevPage, nextPage) {
+    if (page <= 1) {
+      document.getElementById('prev').disabled = true
+    } else {
+        document.getElementById('prev').disabled = false
+    }
+
+    if (!nextPage === null) {
+        document.getElementById('next').disabled = true
+    } else {
+        document.getElementById('next').disabled = false
+    }
+ 
 }

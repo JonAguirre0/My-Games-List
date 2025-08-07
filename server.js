@@ -75,5 +75,14 @@ app.get('/games_by_genre', async(req, res) => {
     res.json(data)
 })
 
+app.get('/search', async(req,res) => {
+    const page = req.query.page
+    const searchTerm = req.query.search
+    cacheKey = `searching_game_${searchTerm}_page${page}`
+    const url = `${API_LINK}/games?key=${api_key}&search=${encodeURIComponent(searchTerm)}&page=${page}`
+    const data = await fetchAndCache(cacheKey, url)
+    res.json(data)
+})
+
 app.use(express.static('public'))
 app.listen(port, () => console.log(`Server is running on Port ${port}`))
