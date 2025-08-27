@@ -435,6 +435,7 @@ function showSignIn() {
                 signin.style.display = 'none'
                 logOut.style.display = 'block'
                 logOut.innerHTML = `Log Out, ${username}`
+                myList.style.display = 'block'
                 myList.innerHTML = `${username}'s Game List`
                 prev.style.display = 'none'
                 counter.style.display = 'none'
