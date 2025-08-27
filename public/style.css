@@ -4,6 +4,7 @@
     --text-color: black;
     --bkg-color: white;
     --boxshadow: -5px 5px 7px rgba(0,0,0,0.2);
+    --boxshadow2: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     --lineColor: 1px solid rgba(0,0,0,.25);
 }
 
@@ -20,6 +21,7 @@ body.dark-theme {
     --text-color: white;
     --bkg-color: black;
     --boxshadow: -5px 5px 7px rgba(255,255,255,0.2);
+    --boxshadow2: 0 4px 8px 0 rgba(255,255,255, 0.2), 0 6px 20px 0 rgba(255,255,255, 0.19);
     --lineColor: 1px solid rgba(255,255,255,.25);
 }
 
@@ -677,245 +679,268 @@ main {
 
 
 
-/* below is the CSS for the main2 slider i was trying to create */
-
-#main2 {
-    display:flex;
+.signinForm {
+    display: flex;
     position: relative;
     justify-content: center;
     align-items: center;
-    width: 100%;
-    /* margin: 2rem 0; */
-    overflow: hidden;
-    /* margin: 0; */
-    margin-bottom: 5rem;
-}
-.slider {
-    display: flex;
-    flex-wrap: nowrap;
-    height: 650px;
-    margin-left: 120rem;
-    transition: transform 0.3s ease;
-}
-.sliderRPG {
-    display: flex;
-    height: 650px;
-    margin-left: 120rem;
-    transition: transform 0.3s ease;
-}
-.sliderShooter {
-    display: flex;
-    height: 650px;
-    margin-left: 120rem;
-    transition: transform 0.3s ease;
-}
-.gameG {
-    position: relative;
     top: 9rem;
     background-color: var(--bkg-color);
-    /* width: 500px;
-    height: 350px; */
-    width: 400px;
-    height: 300px;
-    /* margin: 1rem; */
-    margin-right: 9rem;
-    margin-bottom: 11rem;
-    border-radius: 30px;
     box-shadow: var(--boxshadow);
-    flex-shrink: 0;
-    cursor: pointer;
+    height: 550px;
+    width: 550px;
+    z-index: 100;
 }
-.game-img {
+.signinForm h3 {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 300px;
-}
-.gameG img  {
-    width: 100%;
-    height: 300px;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-}
-.gameG2 {
     position: relative;
-    top: 9rem;
-    background-color: var(--bkg-color);
+    align-items: center;
+    justify-content: center;
+    color: var(--text-color);
+    font-size: 35px;
+    top: -80px;
+    letter-spacing: 1px;
+}
+.usernameTitle {
+    display: flex;
+    position: relative;
+    margin: -1rem 1.5rem;
+    color: var(--text-color);
+    font-size: 18px;
+    top: -2rem;
+}
+.usernameTitleError {
+    display: flex;
+    position: absolute;
+    font-size: 18px;
+    top: 10rem;
+    left: 10rem;
+    color: red;
+}
+.username {
+    display: flex;
+    position: relative;
+    align-items: center;
+    justify-content: center;
+    padding: 0.9rem 0.6rem;
+    margin: 1.5rem 1rem;
+    font-size: 18px;
     width: 500px;
-    height: 350px;
-    margin: 1rem;
-    border-radius: 30px;
-    box-shadow: var(--boxshadow);
-    flex-shrink: 0;
+    border: 2px solid var(--text-color);
+    border-radius: 10px;
+    background-color: var(--bkg-color);
+    color: var(--text-color);
+    top: -2rem;
 }
-.gameG2 img  {
-    width: 100%;
-    height: 300px;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-}
-.gameG3 {
+.passwordTitle {
+    display: flex;
     position: relative;
+    margin: -1.5rem 1.5rem;
+    color: var(--text-color);
+    font-size: 18px;
+    top: -0.5rem;
+}
+.password {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.9rem 0.6rem;
+    margin: 1.5rem 1rem;
+    font-size: 18px;
+    width: 500px;
+    border: 2px solid var(--text-color);
+    border-radius: 10px;
+    background-color: var(--bkg-color);
+    color: var(--text-color);
+}
+.signInForm .buttons {
+    display: flex;
+    position: relative;
+    gap: 2rem;
+    top: 1rem;
+    justify-content: center;
+    align-items: center;
+}
+.submit{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--text-color);
+    background-color: #458ee2;
+    border: 2px solid var(--text-color);
+    border-radius: 10px;
+    height: 50px;
+    width: 150px;
+    font-family: inherit;
+    letter-spacing: 1px;
+    cursor: pointer;
+}
+.submit:active{
+    transform: scale(0.9);
+}
+.submit:hover{
+    opacity: 0.9;
+}
+
+.accountLink {
+    display: flex;
+    position: relative;
+    justify-content: center;
+    align-items: center;
+    bottom: -60px;
+    gap: 1rem;
+}
+.textBeforeLink {
+    color: var(--text-color);
+}
+.createAccountLink {
+    cursor: pointer;
+    z-index: 100;
+}
+.createAccount {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--bkg-color);
+    font-family: inherit;
+    letter-spacing: 1px;
+    cursor: pointer;
+    text-decoration: none;
+    color: blue;
+    z-index: 100;
+}
+.createAccount:active{
+    transform: scale(0.9);
+}
+
+.createAccountForm {
+    display: flex;
+    position: relative;
+    justify-content: center;
+    align-items: center;
     top: 9rem;
     background-color: var(--bkg-color);
+    box-shadow: var(--boxshadow2);
+    height: 550px;
+    width: 550px;
+}
+.createAccountForm h3 {
+    display: flex;
+    position: relative;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-color);
+    font-size: 35px;
+    top: -60px;
+    letter-spacing: 1px;
+}
+.createAccountForm .usernameTitle{
+    display: flex;
+    position: relative;
+    margin: -1rem 1.5rem;
+    color: var(--text-color);
+    font-size: 18px;
+    top: -3rem;
+}
+.createAccountForm .usernameTitleError{
+    display: flex;
+    position: absolute;
+    font-size: 18px;
+    top: 7.2rem;
+    left: 10rem;
+    color: red;
+}
+.createAccountForm .username {
+    display: flex;
+    position: relative;
+    align-items: center;
+    justify-content: center;
+    padding: 0.9rem 0.6rem;
+    margin: 1.5rem 1rem;
+    font-size: 18px;
     width: 500px;
-    height: 350px;
-    margin: 1rem;
-    border-radius: 30px;
-    box-shadow: var(--boxshadow);
-    flex-shrink: 0;
+    border: 2px solid var(--text-color);
+    border-radius: 10px;
+    background-color: var(--bkg-color);
+    color: var(--text-color);
+    top: -2rem;
 }
-.gameG3 img  {
-    width: 100%;
-    height: 300px;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-}
-.leftBtn {
+.createAccountForm .passwordTitle {
     display: flex;
-    position: absolute;
+    position: relative;
+    margin: -1.5rem 1.5rem;
+    color: var(--text-color);
+    font-size: 18px;
+    top: -0.8rem;
+}
+.createAccountForm .password {
+    display: flex;
+    position: relative;
+    align-items: center;
+    justify-content: center;
+    padding: 0.9rem 0.6rem;
+    margin: 1.5rem 1rem;
+    font-size: 18px;
+    width: 500px;
+    border: 2px solid var(--text-color);
+    border-radius: 10px;
+    background-color: var(--bkg-color);
+    color: var(--text-color);
+    top: -0.6rem;
+}
+.createAccountForm .emailTitle {
+    display: flex;
+    position: relative;
+    margin: -1.5rem 1.5rem;
+    color: var(--text-color);
+    font-size: 18px;
+    top: 0rem;
+}
+.createAccountForm .email {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.9rem 0.6rem;
+    margin: 1.5rem 1rem;
+    font-size: 18px;
+    width: 500px;
+    border: 2px solid var(--text-color);
+    border-radius: 10px;
+    background-color: var(--bkg-color);
+    color: var(--text-color);
+}
+.createAccountForm .button {
+    display: flex;
+    position: relative;
+    gap: 2rem;
+    top: 1rem;
     justify-content: center;
     align-items: center;
-    left: 40px;
-    top: 21%;
-    z-index: 100;
-    background-color: transparent;
-    height: 10%;
-    width: 1.5%;
-    font-size: 20px;
-    border: 1px solid var(--text-color);
-    border-radius: 10px;
-    color: var(--text-color);
-    cursor: pointer;
 }
-.leftBtn:hover {
-    background-color: lightslategray;
-}
-.leftBtn:active {
-    transform: scale(0.9);
-}
-.rightBtn {
+.signUp{
     display: flex;
-    position: absolute;
     justify-content: center;
     align-items: center;
-    right: 25px;
-    top: 21%;
-    z-index: 100;
-    background-color: transparent;
-    height: 10%;
-    width: 1.5%;
-    font-size: 20px;
-    border: 1px solid var(--text-color);
-    border-radius: 10px;
     color: var(--text-color);
+    background-color: #458ee2;
+    border: 2px solid var(--text-color);
+    border-radius: 10px;
+    height: 50px;
+    width: 150px;
+    font-family: inherit;
+    letter-spacing: 1px;
     cursor: pointer;
+    z-index: 100;
 }
-.rightBtn:hover {
-    background-color: lightslategray;
-}
-.rightBtn:active {
+.signUp:active{
     transform: scale(0.9);
+}
+.signUp:hover{
+    opacity: 0.9;
 }
 
-.leftBtn2 {
-    display: flex;
-    position: absolute;
-    justify-content: center;
-    align-items: center;
-    left: 35px;
-    top: 70%;
-    height: 10%;
-    width: 1.5%;
-    font-size: 20px;
-    border: 1px solid var(--text-color);
-    border-radius: 10px;
-    background-color: transparent;
-    color: var(--text-color);
-    cursor: pointer;
-    z-index: 100;
-    transform-origin: center;
-}
-.leftBtn2:hover {
-    background-color: lightslategray;
-}
-.leftBtn2:active {
-    transform: scale(0.9);
-}
-.rightBtn2 {
-    display: flex;
-    position: absolute;
-    justify-content: center;
-    align-items: center;
-    right: 25px;
-    top: 70%;
-    height: 10%;
-    width: 1.5%;
-    font-size: 20px;
-    border: 1px solid var(--text-color);
-    border-radius: 10px;
-    background-color: transparent;
-    color: var(--text-color);
-    cursor: pointer;
-    z-index: 100;
-    transform-origin: center;
-}
-.rightBtn2:hover {
-    background-color: lightslategray;
-}
-.rightBtn2:active {
-    transform: scale(0.9);
-}
 
-.leftBtn3 {
-    display: flex;
-    position: absolute;
-    justify-content: center;
-    align-items: center;
-    left: 35px;
-    top: 78%;
-    height: 10%;
-    width: 1.5%;
-    font-size: 20px;
-    border: 1px solid var(--text-color);
-    border-radius: 10px;
-    background-color: transparent;
-    color: var(--text-color);
-    cursor: pointer;
-    z-index: 100;
-    transform-origin: center;
-}
-.leftBtn3:hover {
-    background-color: lightslategray;
-}
-.leftBtn3:active {
-    transform: scale(0.9);
-}
-.rightBtn3 {
-    display: flex;
-    position: absolute;
-    justify-content: center;
-    align-items: center;
-    right: 25px;
-    top: 78%;
-    height: 10%;
-    width: 1.5%;
-    font-size: 20px;
-    border: 1px solid var(--text-color);
-    border-radius: 10px;
-    background-color: transparent;
-    color: var(--text-color);
-    cursor: pointer;
-    z-index: 100;
-    transform-origin: center;
-}
-.rightBtn3:hover {
-    background-color: lightslategray;
-}
-.rightBtn3:active {
-    transform: scale(0.9);
-}
+
 
 
 
