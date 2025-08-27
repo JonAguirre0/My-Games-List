@@ -16,18 +16,6 @@ const UserSchema = new mongoose.Schema ({
         type: String,
         required: true
     },
-    savedGames: [
-        {
-            name: String,
-            background_image: String,
-            released: String,
-            description: String,
-            metacritic: String,
-            rating: String,
-            slug: String,
-            id: String
-        }
-    ],
     completed: [
         {
             name: String,

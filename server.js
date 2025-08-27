@@ -2,12 +2,17 @@ require('dotenv').config()
 const NodeCache = require('node-cache')
 const express = require('express')
 const connectDB = require('./db')
+const jwt = require('jsonwebtoken')
+const bcrypt = require('bcrypt')
+const User = require('./user')
 
 const gameCache = new NodeCache({stdTTL: 3600})  //time to live set to one hour
 const app = express()
+app.use(express.json())
 const port = process.env.PORT
 //Provide API Key below
 const api_key = process.env.API_KEY
+const jwtSecret = process.env.JWT
 
 const today = new Date()
 const year = today.getFullYear()
@@ -17,6 +22,8 @@ const todaysDate = `${year}-${month}-${day}`
 const endOfYear = `${year}-12-31`
 
 const API_LINK = 'https://api.rawg.io/api'
+
+connectDB()
 
 async function fetchAndCache(key, url) {
     const cached = gameCache.get(key)
@@ -84,6 +91,92 @@ app.get('/search', async(req,res) => {
     const url = `${API_LINK}/games?key=${api_key}&search=${encodeURIComponent(searchTerm)}&page=${page}`
     const data = await fetchAndCache(cacheKey, url)
     res.json(data)
+})
+
+//Create Account
+app.post('/register', async(req, res) => {
+    try {
+        console.log('Incoming body:', req.body)
+        const { username, email, password } = req.body
+
+        if (!username || !email || !password) {
+            return res.status(400).json({error: '*All fields are required'})
+        }
+
+        const userExists = await User.findOne({ username })
+        if(userExists) {
+            return res.status(400).json({error: '*Username already exists'})
+        }
+
+        const newUser = await User.create({ username, email, password })
+        res.json({ success: true, user_id: newUser._id })
+    } catch(err) {
+        res.status(500).json({ message: '*Registeration Error' })
+    }
+})
+
+//Login the User
+app.post('/login', async(req, res) => {
+    try {
+        console.log('Incoming Body:', req.body)
+        const { username, password } = req.body
+
+        const user = await User.findOne({ username })
+        if (!user) {
+            return res.status(401).json({ error:'*Invalid Username'})
+        }
+
+        const isMatch = await bcrypt.compare(password, user.password)
+        if (isMatch) {
+            const token = jwt.sign({ user_id: user._id, username: user.username }, jwtSecret, { expiresIn: '1h' })
+            res.json({message: 'Login Successful', token})
+        } else {
+            return res.status(401).json({error: '*Invalid Password'})
+        }
+    } catch(err) {
+        res.status(500).json({ error:'Login Error' })
+    }
+})
+
+app.post('/logout', async(req, res) => {
+    res.status(200).json({message:'Logged Out Successfully'})
+    console.log('Logged Out Successfully')
+})
+
+app.post('/deletedGame', async(req,res) => {
+    const authHeader = req.headers['authorization']
+    const token = authHeader && authHeader.split(' ')[1]
+    const { name, background_image, metacritic, rating, description, released, slug, id, isCompletedTrue, isCurrentlyPlayingTrue, isWantToPlayTrue } = req.body
+    
+    if (!token) {
+        return res.status(401).json({ error: 'No Token Provided' })
+    }
+    try {
+        const checkToken = jwt.verify(token, jwtSecret)
+        const user = await User.findById(checkToken.user_id)
+
+        if (isCompletedTrue === true) {
+            user.completed.pull({ name, background_image, metacritic, rating, description, released, slug, id, isCompletedTrue })
+            await user.save()
+        }
+
+        if (isCurrentlyPlayingTrue === true) {
+            user.currentlyPlaying.pull({ name, background_image, metacritic, rating, description, released, slug, id, isCurrentlyPlayingTrue })
+            await user.save()
+        }
+
+        if(isWantToPlayTrue === true) {
+            user.wantToPlay.pull({ name, background_image, metacritic, rating, description, released, slug, id,isWantToPlayTrue })
+            await user.save()
+        }
+            
+        await user.save()
+        res.json({message: 'Game Deleted Successfully'})
+        console.log('Game Deleted Successfully')
+    } catch (err) {
+        console.error('JWT Verification Error:', err.message)
+        res.status(401).json({error:"Error, Account Session Error"})
+    }
 })
 
 app.use(express.static('public'))

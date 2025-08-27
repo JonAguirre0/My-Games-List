@@ -22,6 +22,19 @@ const closeEl = document.getElementById('x')
 const title = document.getElementById('title')
 const genre = document.querySelector('.genre')
 const gameGenre = document.querySelector('.gameG')
+const username = document.querySelector('.username')
+const email = document.querySelector('.email')
+const password = document.querySelector('.password')
+const logOut = document.querySelector('.logOut')
+const myList = document.querySelector('.myList')
+const options = document.querySelector('.off-screen-menu2')
+const completed = document.querySelector('.completed')
+const currentlyPlaying = document.querySelector('.currentlyPlaying')
+const wantToPlay = document.querySelector('.wantToPlay')
+const options2 = document.querySelector('.off-screen-menu3')
+const completedList = document.querySelector('.completedList')
+const currentlyPlayingList = document.querySelector('.currentlyPlayingList')
+const wantToPlayList = document.querySelector('.wantToPlayList')
 
 const today = new Date()
 const year = today.getFullYear()
@@ -42,6 +55,12 @@ let currentGenreName = null
 let genreName = ''
 let currentType = 'upcoming'
 let currentParams = {}
+let isCompleted = false
+let isCurrentlyPlaying = false
+let isWantToPlay = false
+let userNameList = null
+let selectedGame = null
+localStorage.removeItem('token')
 
 const API = 'http://localhost:5501'
 
@@ -55,9 +74,11 @@ window.onload = function loading() {
 
 //Get initial games
 fetchAndDisplay('upcoming', page)
+title.innerHTML = `Upcoming Games for ${year}`
 
 async function fetchAndDisplay(type = 'upcoming', page = 1, extraParams = {}) {
     main.innerHTML = ''
+    token = localStorage.getItem('token')
     const params = new URLSearchParams({page, ...extraParams})
     const res = await fetch(`/${type}?${params.toString()}`)
     const data = await res.json()
@@ -66,6 +87,12 @@ async function fetchAndDisplay(type = 'upcoming', page = 1, extraParams = {}) {
         showGenres(data.results)
     } else {
         showGames(data.results)
+    }
+
+    if (token !== null) {
+        document.querySelectorAll('.addGame').forEach(addGameBtn => {
+            addGameBtn.style.display = 'block'
+        })
     }
 
     document.getElementById('next').disabled = !data.next
@@ -337,3 +364,20 @@ function updatePrevNext(prevPage, nextPage) {
     }
  
 }
+
+accountMenu.addEventListener('click', () => {
+    accountIcon.classList.toggle('active')
+    accountXIcon.classList.toggle('active')
+    offScreenSideMenu.classList.toggle('active')
+})
+
+signin.addEventListener('click', () => {
+    accountIcon.classList.toggle('active')
+    accountXIcon.classList.toggle('active')
+    offScreenSideMenu.classList.toggle('active')
+    prev.style.display = 'none'
+    counter.style.display = 'none'
+    next.style.display = 'none'
+    title.innerHTML = ''
+    showSignIn()
+})
