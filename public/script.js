@@ -3,6 +3,7 @@ const offScreenMenu = document.querySelector('.off-screen-menu')
 const accountMenu = document.querySelector('.user')
 const accountIcon = document.getElementById('user')
 const accountXIcon = document.getElementById('x')
+const account = document.querySelector('.account')
 const offScreenSideMenu = document.querySelector('.off-screen-side-menu')
 const signin = document.querySelector('.signin')
 const createAccount = document.querySelector('.create-account')
@@ -369,6 +370,7 @@ accountMenu.addEventListener('click', () => {
     accountIcon.classList.toggle('active')
     accountXIcon.classList.toggle('active')
     offScreenSideMenu.classList.toggle('active')
+    console.log('account clicked')
 })
 
 signin.addEventListener('click', () => {
