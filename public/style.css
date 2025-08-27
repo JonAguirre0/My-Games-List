@@ -679,7 +679,7 @@ main {
 
 
 
-.signinForm {
+.signInForm {
     display: flex;
     position: relative;
     justify-content: center;
@@ -691,7 +691,7 @@ main {
     width: 550px;
     z-index: 100;
 }
-.signinForm h3 {
+.signInForm h3 {
     display: flex;
     position: relative;
     align-items: center;

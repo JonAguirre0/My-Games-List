@@ -227,12 +227,6 @@ form.addEventListener('submit', (e) => {
     }
 })
 
-accountMenu.addEventListener('click', () => {
-    accountIcon.classList.toggle('active')
-    accountXIcon.classList.toggle('active')
-    offScreenSideMenu.classList.toggle('active')
-})
-
 topRated.addEventListener('click', () => {
     document.getElementById('loader').style.display = "block"
 
@@ -370,7 +364,6 @@ accountMenu.addEventListener('click', () => {
     accountIcon.classList.toggle('active')
     accountXIcon.classList.toggle('active')
     offScreenSideMenu.classList.toggle('active')
-    console.log('account clicked')
 })
 
 signin.addEventListener('click', () => {
@@ -495,16 +488,16 @@ function showCreateAccount() {
 
     const signUp = document.querySelector('.signUp')
     signUp.addEventListener('click', () => {
-        const username = document.querySelector('username').value
-        const email = document.querySelector('email').value
-        const password = document.querySelector('password').value
+        const username = document.querySelector('.username').value
+        const email = document.querySelector('.email').value
+        const password = document.querySelector('.password').value
         signUpPost(username, email, password)
     })
 
     async function signUpPost(username, email, password) {
         const usernameTitleError = document.querySelector('.usernameTitleError')
         try {
-            const res = await fetch('/registor', {
+            const res = await fetch('/register', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({username, email, password})
