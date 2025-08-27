@@ -1,3 +1,5 @@
+const e = require("express")
+
 const menu = document.querySelector('.menu')
 const offScreenMenu = document.querySelector('.off-screen-menu')
 const accountMenu = document.querySelector('.user')
@@ -381,3 +383,141 @@ signin.addEventListener('click', () => {
     title.innerHTML = ''
     showSignIn()
 })
+
+function showSignIn() {
+    main.innerHTML = ''
+    const signInEl = document.createElement('div')
+    signInEl.classList.add('signInForm')
+    signInEl.innerHTML = `
+        <div>
+            <h3>Sign In</h3>
+            <div class="inputs">
+                <a class="usernameTitle">Username</a>
+                <a class="usernameTitleError"></a>
+                <input class="username" id="username" type="text" placeholder="Username">
+                <a class="passwordTitle">Password</a>
+                <input class="password" id="password" type="password" placeholder="Password">
+            </div>
+            <div class="buttons">
+                <button class="submit" id="submit">Submit</button>
+            </div>
+            <div class="accountLink">
+                <a class="textBeforeLink">Don't have an Account?</a>
+                <a href="#" class="createAccountLink" id="createAccount">Create Account</a>
+            </div>
+        </div>
+    `
+    main.appendChild(signInEl)
+    
+    const createAccountLink = document.querySelector('.createAccountLink')
+    createAccountLink.addEventListener('click', () => {
+        showCreateAccount()
+    })
+
+    const submit = document.querySelector('.submit')
+    submit.addEventListener('click', () => {
+        const username = document.querySelector('.username').value
+        const password = document.querySelector('.password').value
+        console.log(username.value, password.value)
+        logInPost(username, password)
+    })
+
+    async function logInPost(username, password) {
+        const usernameTitleError = document.querySelector('.usernameTitleError')
+        const logOut = document.querySelector('.logOut')
+        userNameList = username
+        try {
+            const res = await fetch('/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, password })
+            })
+            const data = await res.json()
+            if(!res.ok){
+                usernameTitleError.textContent = data.error
+            } else {
+                usernameTitleError.textContent = ''
+                alert('Login Successfull')
+                localStorage.setItem('token', data.token)
+                signin.style.display = 'none'
+                logOut.style.display = 'block'
+                logOut.innerHTML = `Log Out, ${username}`
+                myList.innerHTML = `${username}'s Game List`
+                prev.style.display = 'none'
+                counter.style.display = 'none'
+                next.style.display = 'none'
+                title.innerHTML = `Upcoming Games for ${year}`
+                account.innerHTML = `${username}`
+                await fetchAndDisplay('upcoming', page)
+                document.querySelectorAll('.addGame').forEach(addGameBtn => {
+                    addGameBtn.style.display = 'block'
+                })
+            }
+        } catch(err) {
+            usernameTitleError.textContent = 'Error, Login Unsuccessfull'
+        }
+    }
+}
+
+createAccount.addEventListener('click', () => {
+    showCreateAccount()
+    prev.style.display = 'none'
+    counter.style.display = 'none'
+    next.style.display = 'none'
+    title.innerHTML = ''
+    accountIcon.classList.toggle('active')
+    accountXIcon.classList.toggle('active')
+    offScreenSideMenu.classList.toggle('active')
+})
+
+function showCreateAccount() {
+    main.innerHTML = ''
+    const createAccountEl = document.createElement('div')
+    createAccountEl.classList.add('createAccountForm')
+    createAccountEl.innerHTML = `
+        <div>
+            <h3>Registration</h3>
+            <div class="inputs">
+                <a class="usernameTitle">Username</a>
+                <a class="usernameTitleError"></a>
+                <input class="username" id="username" type="text" placeholder="Username">
+                <a class="passwordTitle">Password</a>
+                <input class="password" id="password" type"password" placeholder="Password">
+                <a class="emailTitle">Email</a>
+                <input class="email" id="email" type="text" placeholder="Email">
+            </div>
+            <div class="button">
+                <button class="signUp" id="signUp">Sign Up</button>
+            </div>
+        </div>
+    `
+    main.appendChild(createAccountEl)
+
+    const signUp = document.querySelector('.signUp')
+    signUp.addEventListener('click', () => {
+        const username = document.querySelector('username').value
+        const email = document.querySelector('email').value
+        const password = document.querySelector('password').value
+        signUpPost(username, email, password)
+    })
+
+    async function signUpPost(username, email, password) {
+        const usernameTitleError = document.querySelector('.usernameTitleError')
+        try {
+            const res = await fetch('/registor', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({username, email, password})
+            })
+            const data = await res.json()
+            if(!res.ok) {
+                usernameTitleError.textContent = data.error
+            } else {
+                usernameTitleError.textContent = ''
+                alert('Registration Successfull')
+            }
+        } catch(err) {
+            usernameTitleError.textContent = 'Error, Registration Unsuccessfull'
+        }
+    }
+}
