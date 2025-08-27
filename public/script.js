@@ -1,5 +1,3 @@
-const e = require("express")
-
 const menu = document.querySelector('.menu')
 const offScreenMenu = document.querySelector('.off-screen-menu')
 const accountMenu = document.querySelector('.user')

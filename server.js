@@ -1,10 +1,10 @@
 require('dotenv').config()
 const NodeCache = require('node-cache')
 const express = require('express')
-const connectDB = require('./db')
+const connectDB = require('./public/db')
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
-const User = require('./user')
+const User = require('./public/user')
 
 const gameCache = new NodeCache({stdTTL: 3600})  //time to live set to one hour
 const app = express()
