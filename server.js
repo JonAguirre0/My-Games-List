@@ -179,5 +179,85 @@ app.post('/deletedGame', async(req,res) => {
     }
 })
 
+app.post('/completed', async(req, res) => {
+    const authHeader = req.headers['authorization']
+    const token = authHeader && authHeader.split(' ')[1]
+    const { name, background_image, metacritic, rating, description, released, slug, id } = req.body
+    if (!token) {
+        return res.status(401).json({error: 'No Token Provided'})
+    }
+    try {
+        const checkToken = jwt.verify(token, jwtSecret)
+        const user = await User.findById(checkToken.user_id)
+
+        user.completed.push({name, background_image, metacritic, rating, description, released, slug, id})
+        await user.save()
+
+        res.json({message: 'Game Saved Successfully to Completed List'})
+    } catch(err) {
+        console.error('JWT Verification Error:', err.message)
+        res.status(401).json({error: 'Error, Account Session Error'})
+    }
+})
+
+app.post('/wantToPlay', async(req,res) => {
+    const authHeader = req.headers['authorization']
+    const token = authHeader && authHeader.split(' ')[1]
+    const { name, background_image, metacritic, rating, description, released, slug, id } = req.body
+    if(!token) {
+        return res.status(401).json({error: 'No Token Provided'})
+    }
+    try {
+        const checkToken = jwt.verify(token, jwtSecret)
+        const user = await User.findById(checkToken.user_id)
+
+        user.wantToPlay.push({name, background_image, metacritic, rating, description, released, slug, id})
+        await user.save()
+
+        res.json({message: 'Game Saved Successfully to Want to Play List'})
+    } catch (err) {
+        console.error('JWT Verification Error:', err.message)
+        res.status(401).json({error: 'Error, Account Session Error'})
+    }
+})
+
+app.post('/currentlyPlaying', async(req, res) => {
+    const authHeader = req.headers['authorization']
+    const token = authHeader && authHeader.split(' ')[1]
+    const { name, background_image, metacritic, rating, description, released, slug, id } = req.body
+    if(!token) {
+        return res.status(401).json({error: 'No Token Provided'})
+    }
+    try {
+        const checkToken = jwt.verify(token, jwtSecret)
+        const user = await User.findById(checkToken.user_id)
+
+        user.currentlyPlaying.push({name, background_image, metacritic, rating, description, released, slug, id})
+        await user.save()
+
+        res.json({message: 'Game Saved Successfully to Currently Playing List'})
+    } catch (err) {
+        console.error('JWT Verification Error:', err.message)
+        res.status(401).json({error: 'Error, Account Session Error'})
+    }
+})
+
+app.post('/completedList', async(req, res) => {
+    const page = req.query.page
+    const authHeader = req.headers['authorization']
+    const token = authHeader && authHeader.split(' ')[1]
+    if(!token) {
+        return res.status(401).json({error: 'No Token Provided'})
+    }
+    try {
+        const checkToken = jwt.verify(token, jwtSecret)
+        const user = await User.findById(checkToken.user_id)
+
+        res.json({completed: user.completed})
+    } catch(err) {
+        console.log('JWT Verification Error:', err.message)
+    }
+})
+
 app.use(express.static('public'))
 app.listen(port, () => console.log(`Server is running on Port ${port}`))
