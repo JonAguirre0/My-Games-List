@@ -242,7 +242,7 @@ app.post('/currentlyPlaying', async(req, res) => {
     }
 })
 
-app.post('/completedList', async(req, res) => {
+app.get('/completedList', async(req, res) => {
     const page = req.query.page
     const authHeader = req.headers['authorization']
     const token = authHeader && authHeader.split(' ')[1]
@@ -255,6 +255,40 @@ app.post('/completedList', async(req, res) => {
 
         res.json({completed: user.completed})
     } catch(err) {
+        console.log('JWT Verification Error:', err.message)
+    }
+})
+
+app.get('/currentlyPlayingList', async(req,res) => {
+    const page = req.query.page
+    const authHeader = req.headers['authorization']
+    const token = authHeader && authHeader.split(' ')[1]
+    if(!token) {
+        return res.status(401).json({error: 'No Token Provided'})
+    }
+    try {
+        const checkToken = jwt.verify(token, jwtSecret)
+        const user = await User.findById(checkToken.user_id)
+
+        res.json({currentlyPlaying: user.currentlyPlaying})
+    } catch (err) {
+        console.log('JWT Verification Error:', err.message)
+    }
+})
+
+app.get('/wantToPlayList', async(req, res) => {
+    const page = req.query.page
+    const authHeader = req.headers['authorization']
+    const token = authHeader && authHeader.split(' ')[1]
+    if(!token) {
+        return res.status(401).json({error: 'No Token Provided'})
+    }
+    try {
+        const checkToken = jwt.verify(token, jwtSecret)
+        const user = await User.findById(checkToken.user_id)
+
+        res.json({wantToPlay: user.wantToPlay})
+    } catch (err) {
         console.log('JWT Verification Error:', err.message)
     }
 })
