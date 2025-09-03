@@ -335,10 +335,19 @@ topRated.addEventListener('click', () => {
     title.innerHTML = "Top Rated Games"
     counter.innerHTML = `${page}`
     currentType = 'top_rated_games'
+    token = localStorage.getItem('token')
     fetchAndDisplay(currentType, page).then(() => {
         document.getElementById('loader').style.display = "none"
         document.getElementById('background').style.display = "block"
+        document.getElementById("prev").style.display = 'block'
+        document.getElementById("counter").style.display = 'block'
+        document.getElementById("next").style.display = 'block'
     }) 
+    if (token !== null) {
+        document.querySelectorAll('.addGame').forEach(addGameBtn => {
+            addGameBtn.style.display = 'block'
+        })
+    }
 })
 
 random.addEventListener('click', () => {
@@ -365,10 +374,16 @@ function getRandomGames() {
     isGenre = false
     isUpcoming = false
     currentType = 'random'
+    token = localStorage.getItem('token')
     fetchAndDisplay(currentType, randomPage).then (() => {
         document.getElementById('loader').style.display = "none"
         document.getElementById('background').style.display = "block"
     })
+    if ( token !== null ) {
+        document.querySelectorAll('.addGame').forEach(addGameBtn => {
+            addGameBtn.style.display = 'block'
+        })
+    }
 }
 
 genre.addEventListener('click', () => {
@@ -392,9 +407,16 @@ genre.addEventListener('click', () => {
 next.addEventListener('click', () => {
     document.getElementById('loader').style.display = "block"
     page++
+    const token = localStorage.getItem('token')
+    getNextPage()
     fetchAndDisplay(currentType, page, currentParams).then(() => {
         document.getElementById('loader').style.display = "none"
         document.getElementById('background').style.display = "block"
+        if (token !== null) {
+            document.querySelectorAll('.addGame').forEach(addGameBtn => {
+                addGameBtn.style.display = 'block'
+            })
+        }
     })
     counter.innerHTML = `${page}`
     console.log("Next clicked")
@@ -402,8 +424,10 @@ next.addEventListener('click', () => {
 
 function getNextPage() {
     if (isTopRated) {
+        document.getElementById('loader').style.display = "block"
         title.innerHTML = `Top Rated Games Page ${page}`
     } else if (isSearchTerm) {
+        document.getElementById('loader').style.display = "block"
         const searchTerm = search.value
         title.innerHTML = `${searchTerm}`
     } else if(isGenre) {
@@ -414,13 +438,18 @@ function getNextPage() {
 }
 
 prev.addEventListener('click', () => {
-    document.getElementById('loader').style.display = "block"
+    const token = localStorage.getItem('token')
     page--
     getPrevPage()
     counter.innerHTML = `${page}`
     fetchAndDisplay(currentType, page, currentParams).then (() => {
         document.getElementById('loader').style.display = "none"
         document.getElementById('background').style.display = "block"
+        if(token !== null) {
+            document.querySelectorAll('.addGame').forEach(addGameBtn => {
+                addGameBtn.style.display = 'block'
+            })
+        }
     })
     console.log("prev clicked")
 })
@@ -429,15 +458,20 @@ function getPrevPage() {
     if (page < 1) page = 1
     if (isTopRated) {
         title.innerHTML = `Top Rated Games Page ${page}`
+        document.getElementById('loader').style.display = "none"
+        document.getElementById('background').style.display = "block"
     } else if(isSearchTerm) {
-        document.getElementById('loader').style.display = 'block'
         const searchTerm = search.value
         title.innerHTML = `${searchTerm}`
+        document.getElementById('loader').style.display = "none"
+        document.getElementById('background').style.display = "block"
     } else if(isGenre) {
         title.innerHTML = `Browsing by ${currentGenreName} games`
     }
     else {
         title.innerHTML = `Upcoming Games for ${year}`
+        document.getElementById('loader').style.display = "none"
+        document.getElementById('background').style.display = "block"
     }
 }
 
