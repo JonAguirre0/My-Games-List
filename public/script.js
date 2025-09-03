@@ -136,7 +136,7 @@ function showGenres(genres) {
 
 function showGames(games) {
     games.forEach((game) => {
-        const {name, background_image, metacritic, rating, description, released} = game
+        const {name, background_image, metacritic, rating, description, released, id, slug} = game
 
         const gameEl = document.createElement('div')
         gameEl.classList.add('game')
@@ -153,7 +153,9 @@ function showGames(games) {
             </div>
             <div class="overview">
                 <h3>Description</h3>
-                ${description} ${released}    
+                ${description} ${released}
+                <i class="fa-solid fa-circle-plus addGame" data-name="${name}" data-background_image="${background_image}" data-released="${released}" data-description="${description}" data-metacritic="${metacritic}" data-id=${id} data-slug="${slug}" data-rating="${rating}" id="addGame" style="display: none"></i>
+                <i class="fa-solid fa-circle-minus delGame" data-name="${name}" data-background_image="${background_image}" data-released="${released}" data-description="${description}" data-metacritic="${metacritic}" data-id=${id} data-slug="${slug}" data-rating="${rating}" id="addGame" style="display: none"></i>    
             </div>
         `
         main.appendChild(gameEl)
@@ -180,11 +182,101 @@ function getClassByMetacritic(rate){
     }
 }
 
+document.addEventListener('click', async function (e) {
+    const addGameBtn = e.target.closest('.addGame')
 
-logo.addEventListener('click', () => {
-    window.scrollTo(0,0)
-    window.location.reload()
+    if(addGameBtn) {
+        selectedGame = {
+            name: addGameBtn.dataset.name,
+            background_image: addGameBtn.dataset.background_image,
+            released: addGameBtn.dataset.released,
+            description: addGameBtn.dataset.description,
+            metacritic: addGameBtn.dataset.metacritic,
+            rating: addGameBtn.dataset.rating,
+            slug: addGameBtn.dataset.slug,
+            id: addGameBtn.dataset.id,
+        }
+        console.log(selectedGame)
+
+        const menuHeight = menu.offsetHeight
+        const menuWidth = menu.offsetwidth
+        const viewportHeight = window.innerHeight
+        const viewportWidth = window.innerWidth
+        const rect = addGameBtn.getBoundingClientRect()
+
+        let top = rect.bottom + 5
+        let left = rect.left
+
+        if(rect.bottom + menuHeight > viewportHeight) {
+            top = rect.top - menuHeight + 5
+        }
+        if(rect.left + menuWidth > viewportWidth) {
+            left = viewportWidth - menuWidth - 10
+        }
+
+        options.style.position = 'absolute'
+        options.style.top = `${top + window.pageYOffset}px`
+        options.style.left = `${left + window.pageXOffset}px`
+        options.style.display = 'block'
+        main.classList.add('blur')
+
+        document.addEventListener('click', function (e) {
+            if(!e.target.closest('.addGame') && !e.target.closest('.options')){
+                options.style.display = 'none'
+                main.classList.remove('blur')
+            }
+        })
+    }
+})
+
+document.addEventListener('click', async function (e) {
+    const delGameBtn = e.target.closest('.delGame')
+    
+    if (delGameBtn) {
+        const name = delGameBtn.dataset.name
+        const background_image = delGameBtn.dataset.background_image
+        const released = delGameBtn.dataset.released
+        const description = delGameBtn.dataset.description
+        const metacritic = delGameBtn.dataset.metacritic
+        const rating = delGameBtn.dataset.rating
+        const slug = delGameBtn.dataset.slug
+        const id = delGameBtn.dataset.id
+        const token = localStorage.getItem('token')
+        const isCompletedTrue = isCompleted
+        const isCurrentlyPlayingTrue = isCurrentlyPlaying
+        const isWantToPlayTrue = isWantToPlay
+
+        const res = await fetch('/deletedGame', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({ name, background_image, metacritic, rating, description, released, slug, id, isCompletedTrue, isCurrentlyPlayingTrue, isWantToPlayTrue })
+        })
+        console.log('Game Deleted Successfully')
+        return res.json()
+    }
+})
+
+
+logo.addEventListener('click', async() => {
+    //window.scrollTo(0,0)
+    //window.location.reload()
+    let page = 1
+    document.getElementById("prev").style.display = 'block'
+    document.getElementById("counter").style.display = 'block'
+    document.getElementById("next").style.display = 'block'
+    title.innerHTML = `Upcoming Games for ${year}`
     search.value = ''
+    options2.style.display = 'none'
+    token = localStorage.getItem('token')
+    await fetchAndDisplay('upcoming', page)
+    if (token !== null) {
+        document.querySelectorAll('.addGame').forEach(addGameBtn => {
+            addGameBtn.style.display = 'block'
+        })
+    }
 })
 
 menu.addEventListener('click', () => {
