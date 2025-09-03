@@ -387,6 +387,7 @@ function getRandomGames() {
 }
 
 genre.addEventListener('click', () => {
+    document.getElementById('loader').style.display = "block"
     page = 1
     isGenre = true
     isTopRated = false
@@ -397,7 +398,10 @@ genre.addEventListener('click', () => {
     title.innerHTML = "Browse by Genre"
     
     currentType = 'genres'
-    fetchAndDisplay(currentType, page)
+    fetchAndDisplay(currentType, page).then(() => {
+        document.getElementById('loader').style.display = "none"
+        document.getElementById('background').style.display = "block"
+    })
 
     document.getElementById("prev").style.display = 'none'
     document.getElementById("counter").style.display = 'none'
@@ -645,3 +649,23 @@ function showCreateAccount() {
         }
     }
 }
+
+logOut.addEventListener('click', async () => {
+    const res = await fetch('/logout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, email, password })
+    })
+    if(!res.ok) {
+        alert('Error Logging Out')
+    } else {
+        localStorage.removeItem('token')
+        logOut.style.display = 'none'
+        myList.style.display = 'none'
+        signin.style.display = 'block'
+        accountIcon.classList.toggle('active')
+        accountXIcon.classList.toggle('active')
+        offScreenSideMenu.classList.toggle('active')
+        alert('Log Out Successfull')
+    }
+})
