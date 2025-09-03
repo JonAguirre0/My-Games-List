@@ -571,9 +571,9 @@ function showSignIn() {
                 logOut.innerHTML = `Log Out, ${username}`
                 myList.style.display = 'block'
                 myList.innerHTML = `${username}'s Game List`
-                prev.style.display = 'none'
-                counter.style.display = 'none'
-                next.style.display = 'none'
+                prev.style.display = 'block'
+                counter.style.display = 'block'
+                next.style.display = 'block'
                 title.innerHTML = `Upcoming Games for ${year}`
                 account.innerHTML = `${username}`
                 await fetchAndDisplay('upcoming', page)
