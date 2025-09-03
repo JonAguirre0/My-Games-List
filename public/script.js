@@ -74,7 +74,11 @@ window.onload = function loading() {
 }
 
 //Get initial games
-fetchAndDisplay('upcoming', page)
+document.getElementById('loader').style.display = "block"
+fetchAndDisplay('upcoming', page).then(() => {
+    document.getElementById('loader').style.display = "none"
+    document.getElementById('background').style.display = "block"
+})
 title.innerHTML = `Upcoming Games for ${year}`
 
 async function fetchAndDisplay(type = 'upcoming', page = 1, extraParams = {}) {
@@ -666,6 +670,9 @@ logOut.addEventListener('click', async () => {
         accountIcon.classList.toggle('active')
         accountXIcon.classList.toggle('active')
         offScreenSideMenu.classList.toggle('active')
+        document.querySelectorAll('.addGame').forEach(addGameBtn => {
+            addGameBtn.style.display = 'none'
+        })
         alert('Log Out Successfull')
     }
 })
