@@ -308,12 +308,16 @@ form.addEventListener('submit', (e) => {
     counter.innerHTML = `${page}`
 
     if(searchTerm && searchTerm !== '') {
+        document.getElementById('loader').style.display = "block"
         title.innerHTML = `${searchTerm}`
 
         page = 1
         currentType = 'search'
         currentParams = {search: searchTerm}
-        fetchAndDisplay(currentType, page, currentParams)
+        fetchAndDisplay(currentType, page, currentParams).then (() => {
+            document.getElementById('loader').style.display = "none"
+            document.getElementById('background').style.display = "block"
+        })
     } else {
         window.location.reload()
     }
