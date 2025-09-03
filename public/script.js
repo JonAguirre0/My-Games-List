@@ -669,3 +669,12 @@ logOut.addEventListener('click', async () => {
         alert('Log Out Successfull')
     }
 })
+
+myList.addEventListener('click', () => {
+    main.innerHTML = ''
+    title.innerHTML = `${userNameList}'s Game List`
+    options2.style.display = 'block'
+    prev.style.display = 'none'
+    counter.style.display = 'none'
+    next.style.display = 'none'
+})

@@ -132,7 +132,6 @@ body.dark-theme {
     height: 60px;
     width: 100%;
     top: 80px;
-    /* right: -9000px; */
     opacity: 0;
     transition: 0.2s ease;
 }
@@ -217,7 +216,6 @@ body.dark-theme {
 }
 
 .nav .off-screen-menu.active {
-    /* right: 0; */
     width: 100%;
     opacity: 1;
 }
@@ -225,16 +223,12 @@ body.dark-theme {
 .dark-toggle {
     background-color: transparent;
     position: fixed;
-    /* left: -430px; */
-    /* right: 16%;
-    top: -5px; */
     left:8%;
     top: 1.2%;
     height: 50px;
     width: 50px;
     border: none;
     border-radius: 50%;
-    /* transform: translate(-50%); */
     cursor: pointer;
 }
 
@@ -244,10 +238,7 @@ body.dark-theme {
 
 .nav #title {
     position: fixed;
-    /* margin-top: 140px; */
-    /* right: 150px; */
     right:25%;
-    /* margin-left: 500px; */
     transform: translate(-50%);
     font-family: inherit;
     font-size: 55px;
@@ -262,7 +253,6 @@ body.dark-theme {
     align-items: center;
     border-top-left-radius: 20px;
     border-bottom-left-radius: 20px;
-    /* height: 100vh; */
     height: 50%;
     top: 90px;
     width: 10%;
@@ -283,7 +273,6 @@ body.dark-theme {
     justify-content: center;
     align-items: center;
     gap: 20px;
-    /* top: -400px; */
 }
 .nav .off-screen-side-menu ul .signin {
     background-color: var(--bkg-color);
@@ -304,27 +293,6 @@ body.dark-theme {
     opacity: 0.5;
 }
 .nav .off-screen-side-menu ul .signin:active{
-    transform: scale(0.9);
-}
-.nav .off-screen-side-menu ul .create-account {
-    background-color: var(--bkg-color);
-    border: none;
-    border-radius: 10px;
-    color: var(--text-color);
-    position: relative;
-    margin: 0 20px;
-    top: -12vh;
-    height: 40px;
-    width: 180px;
-    padding: 3px 9px;
-    font-family: inherit;
-    font-size: 16px;
-    cursor: pointer;
-}
-.nav .off-screen-side-menu ul .create-account:hover{
-    opacity: 0.5;
-}
-.nav .off-screen-side-menu ul .create-account:active{
     transform: scale(0.9);
 }
 
@@ -403,7 +371,6 @@ body.dark-theme {
     bottom: 50%;
     padding-left: 0px;
     transform: translate(-50%,-50%);
-    /* background-color: #458ee2; */
     background-color: var(--bkg-color);
     color: var(--text-color);
     border: 2px solid var(--text-color);
@@ -421,7 +388,6 @@ body.dark-theme {
     gap: 0.5rem;
 }
 .off-screen-menu2 ul .completed {
-    
     justify-content: center;
     align-items: center;
     background-color: var(--bkg-color);
@@ -443,7 +409,6 @@ body.dark-theme {
     transform: scale(0.9);
 }
 .off-screen-menu2 ul .currentlyPlaying {
-    
     justify-content: center;
     align-items: center;
     background-color: var(--bkg-color);
@@ -465,7 +430,6 @@ body.dark-theme {
     transform: scale(0.9);
 }
 .off-screen-menu2 ul .wantToPlay {
-    
     justify-content: center;
     align-items: center;
     background-color: var(--bkg-color);
@@ -495,11 +459,9 @@ body.dark-theme {
     height: 130px;
     width: 460px;
     left: 50%;
-    /* bottom: 10%; */
     bottom: 50%;
     transform: translate(-50%,-50%);
     padding-left: 0px;
-    /* background-color: #458ee2; */
     background-color: var(--bkg-color);
     color: var(--text-color);
     border: 2px solid var(--text-color);
@@ -517,7 +479,6 @@ body.dark-theme {
     gap: 0.5rem;
 }
 .off-screen-menu3 ul .completedList {
-    
     justify-content: center;
     align-items: center;
     background-color: var(--bkg-color);
@@ -539,7 +500,6 @@ body.dark-theme {
     transform: scale(0.9);
 }
 .off-screen-menu3 ul .currentlyPlayingList {
-    
     justify-content: center;
     align-items: center;
     background-color: var(--bkg-color);
@@ -561,7 +521,6 @@ body.dark-theme {
     transform: scale(0.9);
 }
 .off-screen-menu3 ul .wantToPlayList {
-    
     justify-content: center;
     align-items: center;
     background-color: var(--bkg-color);
@@ -588,7 +547,6 @@ body.dark-theme {
     justify-content: center;
     align-items: center;
     position: absolute;
-    /* right: 60px; */
     right: 5%;
     transform: translate(-50%);
     top: 25px;
@@ -637,7 +595,6 @@ body.dark-theme {
     align-items: center;
     position: relative;
     margin-top: 25px;
-    /* right: 10px; */
     right: 1%;
     top: 0px;
     padding: 5px;
@@ -745,6 +702,15 @@ main {
     margin: 0rem 8rem;
     margin-bottom: 2rem;
 }
+main.blur {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    margin: 0rem 8rem;
+    margin-bottom: 2rem;
+    filter: blur(5px);
+}
 
 .game {
     position: relative;
@@ -752,7 +718,6 @@ main {
     top: 9rem;
     background-color: var(--bkg-color);
     width: 380px;
-    /* height: 430px; */
     height: 440px;
     margin: 1rem;
     border-radius: 30px;
@@ -820,13 +785,21 @@ main {
     position: relative;
     right: 68px;
 }
+.game-info #myR {
+    display: flex;
+    position: relative;
+    justify-content: center;
+    align-items: center;
+    right: 48px;
+}
 .game-info .date {
     display: flex;
     position: relative;
+    justify-content: center;
+    align-items: center;
     left: 150px;
 }
 .game-info #line {
-    /* border-bottom: 1px solid rgba(255,255,255,.25); */
     border-bottom: var(--lineColor);
     width: 100%;
     outline: none;
@@ -850,7 +823,26 @@ main {
 .game:hover .overview {
     transform: translateY(0) rotateY(180deg);
     opacity: 1;
-    /* transform:rotateY(180deg); */
+}
+.game .overview #addGame {
+    position: relative;
+    left: 11rem;
+    bottom: -1rem;
+    font-size: 35px;
+    cursor: pointer;
+    width: 0;
+}
+.game .overview #delGame {
+    position: relative;
+    left: 15rem;
+    bottom: 1rem;
+    font-size: 35px;
+    cursor: pointer;
+    width: 0;
+}
+.game .overview #delGame:active {
+    color: #C6DCDF;
+    transform: scale(0.9);
 }
 
 .game-info span.green {
