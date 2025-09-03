@@ -856,13 +856,6 @@ main.blur {
 }
 
 
-/* #main2 {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    gap: 20px;
-} */
 .genre {
     width: 300px;
     margin: 1rem;
@@ -877,7 +870,6 @@ main.blur {
 }
 
 .genre-info {
-    /* color: white; */
     color: var(--text-color);
     display: flex;
     align-items: center;
@@ -885,35 +877,6 @@ main.blur {
     text-align: center;
     padding: 0.5rem 1rem 1rem;
     letter-spacing: 0.5px;
-}
-
-
-
-
-
-
-
-
-/* this might also belong to the bottom */
-.genre .content .genreId {
-    font-size: 18px;
-    display: flex;
-    position: relative;
-    justify-content: center;
-    align-items: center;
-    bottom: -180px;
-    color: var(--text-color);
-}
-.genre .content img{
-    height: 200px;
-    display: flex;
-    position: relative;
-    justify-content: center;
-    align-items: center;
-    /* top: -30px; */
-    bottom: 69px;
-    border-top-left-radius: 10px; 
-    border-top-right-radius: 10px;
 }
 
 
