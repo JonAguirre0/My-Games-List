@@ -634,11 +634,10 @@ body.dark-theme {
     position: relative;
     justify-content: center;
     align-items: center;
-    padding-top: 6rem;
     padding-bottom: 1.5rem;
     gap: 2rem;
     bottom: -1.2rem;
-    top: 3rem;
+    top: 8rem;
 }
 
 .bottomBtns .prev {
@@ -831,6 +830,10 @@ main.blur {
     font-size: 35px;
     cursor: pointer;
     width: 0;
+}
+.game .overview #addGame:active {
+    color: #C6DCDF;
+    transform: scale(0.9);
 }
 .game .overview #delGame {
     position: relative;

@@ -690,3 +690,42 @@ myList.addEventListener('click', () => {
     counter.style.display = 'none'
     next.style.display = 'none'
 })
+
+completed.addEventListener('click', async() => {
+    options.style.display = 'none'
+    main.classList.remove('blur')
+    const token = localStorage.getItem('token')
+    const res = await fetch('/completed', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(selectedGame)
+    })
+    return res.json()
+})
+
+completedList.addEventListener('click', async() => {
+    const token = localStorage.getItem('token')
+    main.innerHTML = ''
+    title.innerHTML = 'Completed Game List'
+    isCompleted = true
+    isCurrentlyPlaying = false
+    isWantToPlay = false
+
+    const res = await fetch('/completedList', {
+        method: 'GET',
+        headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`},
+    })
+
+    options2.style.display = 'none'
+    document.getElementById("prev").style.display = 'none'
+    document.getElementById("counter").style.display = 'none'
+    document.getElementById("next").style.display = 'none'
+    const data = await res.json()
+    showGames(data.completed)
+    document.querySelectorAll('.delGame').forEach(delGameBtn => {
+        delGameBtn.style.display = 'block'
+    })
+})
