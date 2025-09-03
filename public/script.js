@@ -274,6 +274,11 @@ logo.addEventListener('click', async() => {
     title.innerHTML = `Upcoming Games for ${year}`
     search.value = ''
     options2.style.display = 'none'
+    menu.classList.toggle('active')
+    offScreenMenu.classList.toggle('active')
+    accountIcon.classList.toggle('active')
+    accountXIcon.classList.toggle('active')
+    offScreenSideMenu.classList.toggle('active')
     token = localStorage.getItem('token')
     await fetchAndDisplay('upcoming', page)
     if (token !== null) {
