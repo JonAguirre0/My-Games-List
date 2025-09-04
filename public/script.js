@@ -102,7 +102,6 @@ async function fetchAndDisplay(type = 'upcoming', page = 1, extraParams = {}) {
 
     document.getElementById('next').disabled = !data.next
     document.getElementById('prev').disabled = !data.previous
-    console.log("Fetched from backend", data.results)
 }
 
 //Displays the Genres and gets the id and name of clicked genre
@@ -200,7 +199,6 @@ document.addEventListener('click', async function (e) {
             slug: addGameBtn.dataset.slug,
             id: addGameBtn.dataset.id,
         }
-        console.log(selectedGame)
 
         const menuHeight = menu.offsetHeight
         const menuWidth = menu.offsetwidth
@@ -432,7 +430,6 @@ next.addEventListener('click', () => {
         }
     })
     counter.innerHTML = `${page}`
-    console.log("Next clicked")
 })
 
 function getNextPage() {
@@ -464,7 +461,6 @@ prev.addEventListener('click', () => {
             })
         }
     })
-    console.log("prev clicked")
 })
 
 function getPrevPage() {
@@ -554,7 +550,6 @@ function showSignIn() {
     submit.addEventListener('click', () => {
         const username = document.querySelector('.username').value
         const password = document.querySelector('.password').value
-        console.log(username.value, password.value)
         logInPost(username, password)
     })
 
@@ -703,6 +698,7 @@ completed.addEventListener('click', async() => {
         },
         body: JSON.stringify(selectedGame)
     })
+    console.log('Game Added to Completed List')
     return res.json()
 })
 
@@ -718,6 +714,7 @@ wantToPlay.addEventListener('click', async() => {
         },
         body: JSON.stringify(selectedGame)
     })
+    console.log('Game Added to Want to Play List')
     return res.json()
 })
 
@@ -733,6 +730,7 @@ currentlyPlaying.addEventListener('click', async() => {
         },
         body: JSON.stringify(selectedGame)
     })
+    console.log('Game Added to Currently Playing List')
     return res.json()
 })
 
