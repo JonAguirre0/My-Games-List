@@ -22,3 +22,17 @@ Dark mode can be toggled by clicking on the "moon" symbol.
 * user.js : This file contains the code for the Schema named User for the database.
 * server.js : This file contains the code for caching responses and all the API GET's and POST's. 
 * images Folder : This folder contains the images which are used in the README, icon, and logo.
+
+![Screen shots of the Game List app displaying the Upcoming games of 2025 at the time this image was taken.](./public/images/myGameListScreenShot2.png)
+
+![](./public/images/myGameListScreenShot3.png)
+
+![](./public/images/myGameListScreenShot4.png)
+
+![](./public/images/myGameListScreenShot5.png)
+
+![](./public/images/myGameListScreenShot6.png)
+
+![](./public/images/myGameListScreenShot7.png)
+
+API used from: https://rawg.io/apidocs
