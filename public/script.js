@@ -263,8 +263,6 @@ document.addEventListener('click', async function (e) {
 
 
 logo.addEventListener('click', async() => {
-    //window.scrollTo(0,0)
-    //window.location.reload()
     let page = 1
     document.getElementById("prev").style.display = 'block'
     document.getElementById("counter").style.display = 'block'
@@ -272,11 +270,12 @@ logo.addEventListener('click', async() => {
     title.innerHTML = `Upcoming Games for ${year}`
     search.value = ''
     options2.style.display = 'none'
-    menu.classList.toggle('active')
-    offScreenMenu.classList.toggle('active')
-    accountIcon.classList.toggle('active')
-    accountXIcon.classList.toggle('active')
-    offScreenSideMenu.classList.toggle('active')
+    menu.classList.remove('active')
+    offScreenMenu.classList.remove('active')
+    accountIcon.classList.remove('active')
+    accountIcon.style.display = 'block'
+    accountXIcon.classList.remove('active')
+    offScreenSideMenu.classList.remove('active')
     token = localStorage.getItem('token')
     await fetchAndDisplay('upcoming', page)
     if (token !== null) {
@@ -667,12 +666,23 @@ logOut.addEventListener('click', async () => {
         logOut.style.display = 'none'
         myList.style.display = 'none'
         signin.style.display = 'block'
-        accountIcon.classList.toggle('active')
-        accountXIcon.classList.toggle('active')
-        offScreenSideMenu.classList.toggle('active')
+        menu.classList.remove('active')
+        offScreenMenu.classList.remove('active')
+        accountIcon.classList.remove('active')
+        accountIcon.style.display = 'block'
+        accountXIcon.classList.remove('active')
+        offScreenSideMenu.classList.remove('active')
         document.querySelectorAll('.addGame').forEach(addGameBtn => {
             addGameBtn.style.display = 'none'
         })
+        title.innerHTML = `Upcoming Games for ${year}`
+        account.innerHTML = 'Account'
+        let page = 1
+        document.getElementById("prev").style.display = 'block'
+        document.getElementById("counter").style.display = 'block'
+        document.getElementById("next").style.display = 'block'
+        search.value = ''
+        await fetchAndDisplay('upcoming', page)
         alert('Log Out Successfull')
     }
 })
