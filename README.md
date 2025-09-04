@@ -7,12 +7,6 @@ Clicking on the "menu" will display multiple buttons for the user to choose from
 
 ![Screen shot displaying the menu while open.](./public/images/myGameListScreenShot1.png)
 
-Users can read the description of each game by hovering over a selected game.
-
-The search bar can be used to look up a specific title, games will show up that are close to the provided title name.
-
-At the bottom of the page the user can go to the next page by clicking on the "next" button and go to the previous page by clicking on the "prev" button.
-
 By clicking on the Menu button the user will have the option to click on "Top Rated Games", "Random Games" or "Browse by Genre".
 
 Clicking on the "Top Rated Games" button will display top rated games based on its metacritic rating and user rating according to rawg api.
@@ -32,6 +26,12 @@ These three lists can be accessible when signed in by clicking on "User's Game L
 Each list dynamically displays the games selected by the user for that category.
 
 When within one of these lists the users can then delete any game they select.
+
+Users can read the description of each game by hovering over a selected game.
+
+The search bar can be used to look up a specific title, games will show up that are close to the provided title name.
+
+At the bottom of the page the user can go to the next page by clicking on the "next" button and go to the previous page by clicking on the "prev" button.
 
 Dark mode can be toggled by clicking on the "moon" symbol.
 
