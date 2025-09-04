@@ -630,6 +630,9 @@ function showCreateAccount() {
         const email = document.querySelector('.email').value
         const password = document.querySelector('.password').value
         signUpPost(username, email, password)
+        let page = 1
+        fetchAndDisplay('upcoming', page)
+        title.innerHTML = `Upcoming Games for ${year}`
     })
 
     async function signUpPost(username, email, password) {
