@@ -706,6 +706,21 @@ completed.addEventListener('click', async() => {
     return res.json()
 })
 
+wantToPlay.addEventListener('click', async() => {
+    options.style.display = 'none'
+    main.classList.remove('blur')
+    const token = localStorage.getItem('token')
+    const res = await fetch('/wantToPlay', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(selectedGame)
+    })
+    return res.json()
+})
+
 completedList.addEventListener('click', async() => {
     const token = localStorage.getItem('token')
     main.innerHTML = ''
@@ -725,6 +740,27 @@ completedList.addEventListener('click', async() => {
     document.getElementById("next").style.display = 'none'
     const data = await res.json()
     showGames(data.completed)
+    document.querySelectorAll('.delGame').forEach(delGameBtn => {
+        delGameBtn.style.display = 'block'
+    })
+})
+
+wantToPlayList.addEventListener('click', async() => {
+    const token = localStorage.getItem('token')
+    main.innerHTML = ''
+    title.innerHTML = `Want to Play Game List`
+    isCompleted = false
+    isCurrentlyPlaying = false
+    isWantToPlay = true
+
+    const res = await fetch('/wantToPlayList', {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+    })
+
+    options2.style.display = 'none'
+    const data = await res.json()
+    showGames(data.wantToPlay)
     document.querySelectorAll('.delGame').forEach(delGameBtn => {
         delGameBtn.style.display = 'block'
     })
